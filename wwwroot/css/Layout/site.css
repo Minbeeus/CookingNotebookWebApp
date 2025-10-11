@@ -1,0 +1,197 @@
+﻿/* =========================
+   RESET & TOÀN TRANG
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background-color: #fff8f2; /* Nền be nhạt */
+    color: #4e342e; /* Chữ nâu đậm */
+    min-height: 100vh;
+}
+
+/* =========================
+   THANH NAVBAR
+========================= */
+.navbar {
+    background-color: #fffdfb;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    padding: 0.8rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+    .navbar .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 auto;
+    }
+
+/* =========================
+   LOGO
+========================= */
+.logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #ff914d;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .logo a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+/* =========================
+   NAV LINKS
+========================= */
+.nav-links {
+    display: flex;
+    gap: 1.2rem;
+}
+
+    .nav-links a {
+        text-decoration: none;
+        color: #4e342e;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+        .nav-links a:hover {
+            color: #ff914d;
+        }
+
+/* =========================
+   AUTH SECTION
+========================= */
+.auth-section {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+/* Nút Đăng nhập / Đăng ký */
+.btn-auth {
+    background-color: #ff914d;
+    color: white;
+    text-decoration: none;
+    padding: 0.45rem 0.9rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+    .btn-auth:hover {
+        background-color: #ff7a2d;
+        transform: translateY(-1px);
+    }
+
+/* =========================
+   USER DROPDOWN
+========================= */
+.user-menu {
+    position: relative;
+}
+
+.user-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #4e342e;
+    transition: color 0.2s ease;
+}
+
+    .user-icon:hover {
+        color: #ff914d;
+    }
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 120%;
+    background-color: #fffdfb;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 0.5rem 0;
+    display: none;
+    min-width: 180px;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease;
+}
+
+    .dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #4e342e;
+        padding: 0.6rem 1rem;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+        .dropdown-menu a:hover {
+            background-color: #fff0e3;
+            color: #ff914d;
+        }
+
+    .dropdown-menu.show {
+        display: block;
+    }
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+    text-align: center;
+    padding: 1.5rem 0;
+    color: #6d4c41;
+    font-size: 0.95rem;
+    background-color: #fff0e3;
+    margin-top: 3rem;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+.nav-toggle,
+.menu-icon {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .menu-icon {
+        display: block;
+        font-size: 1.5rem;
+        color: #4e342e;
+    }
+}

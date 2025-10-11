@@ -1,0 +1,72 @@
+﻿.edit-profile-container {
+    max-width: 500px;
+    margin: 60px auto;
+    background: #fff8f3;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.15);
+}
+
+    .edit-profile-container h2 {
+        color: #ff7a00;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border 0.2s;
+}
+
+input:focus {
+    border-color: #ff7a00;
+    outline: none;
+}
+
+.btn-save, .btn-cancel {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-save {
+    background: #ff7a00;
+    color: white;
+    border: none;
+}
+
+    .btn-save:hover {
+        background: #e36a00;
+    }
+
+.btn-cancel {
+    background: #eee;
+    color: #333;
+    margin-left: 10px;
+}
+
+.alert {
+    background: #ffe5e0;
+    color: #d43f00;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}

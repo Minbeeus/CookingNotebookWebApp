@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Đăng nhập - Cooking Notebook";
+}
+
+<link rel="stylesheet" href="~/css/Account/login.css" />
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1>🍳 Cooking Notebook</h1>
+            <p>Chào mừng trở lại! Vui lòng đăng nhập để tiếp tục.</p>
+        </div>
+
+        <form id="loginForm" method="post" asp-action="Login" asp-controller="Account">
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <input type="email" id="Email" name="Email" required placeholder="Nhập email của bạn" />
+                <small class="error-message" id="emailError"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="Password">Mật khẩu</label>
+                <input type="password" id="Password" name="Password" required placeholder="Nhập mật khẩu" />
+                <small class="error-message" id="passwordError"></small>
+            </div>
+
+            <button type="submit" class="btn-login">Đăng nhập</button>
+
+            <div class="login-links">
+                <a asp-action="Register" asp-controller="Account">Đăng ký ngay</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Account/login.js"></script>
+}

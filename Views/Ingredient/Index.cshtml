@@ -1,0 +1,81 @@
+﻿@model IEnumerable<CookingNotebookWebApp.Models.Ingredient>
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách nguyên liệu";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Ingredient/index.css" />
+}
+
+<div class="ingredient-page">
+    <!-- Header -->
+    <div class="ingredient-header">
+        <h2>🥕 Danh sách nguyên liệu</h2>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Tìm nguyên liệu..." />
+            <button id="searchBtn">🔍</button>
+        </div>
+    </div>
+
+    <div class="ingredient-container">
+        <!-- Sidebar bộ lọc -->
+        <aside class="ingredient-sidebar">
+            <h3>Phân loại</h3>
+            <ul id="categoryList">
+                <li class="active" data-category="all">Tất cả</li>
+                <li data-category="Rau">Rau</li>
+                <li data-category="Củ">Củ</li>
+                <li data-category="Quả">Quả</li>
+                <li data-category="Thịt">Thịt</li>
+                <li data-category="Rau thơm">Rau thơm</li>
+                <li data-category="Gia vị">Gia vị</li>
+                <li data-category="Khác">Khác</li>
+            </ul>
+        </aside>
+
+        <!-- Danh sách nguyên liệu -->
+        <section class="ingredient-content">
+            <div class="view-toggle">
+                <button id="gridView" class="active">🔲 Dạng lưới</button>
+                <button id="listView">📋 Dạng danh sách</button>
+            </div>
+
+            <div class="ingredient-list grid-view" id="ingredientList">
+                @foreach (var item in Model)
+                {
+                    <div class="ingredient-card"
+                         data-category="@item.Type"
+                         data-namevi="@item.Name"
+                         data-namevi_noaccent="@item.ViNameWithoutAccents"
+                         data-nameen="@item.EnName"
+                         data-description="@item.Description"
+                         data-image="@item.ImagePath">
+                        <img src="@item.ImagePath" alt="@item.Name" />
+                        <div class="info">
+                            <h4>@item.Name</h4>
+                            <p>@item.Description</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal chi tiết nguyên liệu -->
+    <div class="ingredient-modal" id="ingredientModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img id="modalImage" src="" alt="" />
+            <h3 id="modalNameVi"></h3>
+            <h4 id="modalNameEn" class="text-muted"></h4>
+            <p><strong>Phân loại:</strong> <span id="modalCategory"></span></p>
+            <p id="modalDescription"></p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Ingredient/index.js"></script>
+}

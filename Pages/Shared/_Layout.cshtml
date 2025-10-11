@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cooking Notebook</title>
+
+    <link rel="stylesheet" href="~/css/Layout/site.css" />
+    <link rel="stylesheet" href="~/css/Homepage/homepage.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                🍳 <a href="/">Cooking Notebook</a>
+            </div>
+
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+            <label for="nav-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+
+            <nav class="nav-links">
+                <a href="/">Trang chủ</a>
+                <a href="/Ingredient/Index">Nguyên liệu</a>
+                <a href="/Recipe/Index">Công thức</a>
+                <a href="/Favorites">Yêu thích</a>
+            </nav>
+
+            <div class="auth-section">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <div class="user-menu">
+                        <button class="user-icon" id="userMenuBtn">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                        <div class="dropdown-menu" id="userDropdown">
+                            <a href="/User/Profile"><i class="fas fa-user"></i> Trang cá nhân</a>
+                            <a href="/User/ChangePassword"><i class="fas fa-key"></i> Đổi mật khẩu</a>
+                            <a href="/Account/Logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a href="/Account/Login" class="btn-auth">Đăng nhập</a>
+                    <a href="/Account/Register" class="btn-auth">Đăng ký</a>
+                }
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 Cooking Notebook. All rights reserved.</p>
+    </footer>
+
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

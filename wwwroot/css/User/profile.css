@@ -1,0 +1,168 @@
+﻿/* ===================== GLOBAL ===================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom, #fff8f3, #ffeedd);
+    margin: 0;
+    padding: 0;
+}
+
+/* ===================== CONTAINER ===================== */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 15px;
+}
+
+/* ===================== PROFILE CARD ===================== */
+.profile-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    padding: 40px 50px;
+    text-align: center;
+    border: 1px solid #f5d9c5;
+    max-width: 600px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+    .profile-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+/* ===================== HEADER ===================== */
+.profile-header .avatar {
+    font-size: 80px;
+    color: #f28c38;
+    margin-bottom: 10px;
+}
+
+.profile-header h2 {
+    color: #5a3210;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+}
+
+.profile-header p {
+    color: #a87552;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+/* ===================== SEPARATOR ===================== */
+.profile-card hr {
+    border: none;
+    height: 1px;
+    background-color: #f3c79e;
+    margin: 20px 0;
+}
+
+/* ===================== INFO SECTION ===================== */
+.profile-info {
+    text-align: left;
+    margin: 0 auto;
+    max-width: 400px;
+}
+
+    .profile-info h3 {
+        color: #d76a11;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        font-weight: 600;
+        border-bottom: 2px solid #f3c79e;
+        padding-bottom: 5px;
+    }
+
+    .profile-info p {
+        margin: 8px 0;
+        color: #5b3920;
+        border-bottom: 1px dotted #e3b289;
+        padding-bottom: 5px;
+        font-size: 1rem;
+    }
+
+    .profile-info strong {
+        color: #c35a05;
+    }
+
+/* ===================== BUTTONS ===================== */
+.profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+    /* Base button style */
+    .profile-actions .btn {
+        padding: 10px 22px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.25s ease;
+        font-size: 0.95rem;
+        cursor: pointer;
+    }
+
+/* Orange main button */
+.btn-orange {
+    background: linear-gradient(45deg, #f28c38, #f5a44d) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 3px 8px rgba(242, 140, 56, 0.3);
+}
+
+    .btn-orange:hover {
+        background: #e57824 !important;
+        color: #fff !important;
+    }
+
+/* Outline button */
+.btn-outline-orange {
+    background: transparent !important;
+    border: 2px solid #f28c38 !important;
+    color: #f28c38 !important;
+}
+
+    .btn-outline-orange:hover {
+        background: #f28c38 !important;
+        color: white !important;
+    }
+
+/* Danger button */
+.btn-danger {
+    background: #d94a38 !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+    .btn-danger:hover {
+        background: #b93828 !important;
+    }
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 480px) {
+    .profile-card {
+        padding: 25px;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+    }
+
+        .profile-actions .btn {
+            width: 100%;
+        }
+
+    .profile-info {
+        max-width: 100%;
+    }
+}

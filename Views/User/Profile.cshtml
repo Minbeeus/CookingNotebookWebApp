@@ -1,0 +1,44 @@
+﻿@model CookingNotebookWebApp.Models.User
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Trang cá nhân";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/User/profile.css" />
+}
+
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <h2>@Model.FullName</h2>
+            <p>Thành viên Cooking Notebook</p>
+        </div>
+
+        <hr />
+
+        <div class="profile-info">
+            <h3>Thông tin tài khoản</h3>
+            <p><strong>Họ và tên:</strong> @Model.FullName</p>
+            <p><strong>Email:</strong> @Model.Email</p>
+            <p><strong>Vai trò:</strong> @(Model.Role ?? "Người dùng")</p>
+            <p><strong>Ngày tham gia:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy")</p>
+        </div>
+
+        <div class="profile-actions">
+            <a href="/User/ChangePassword" class="btn btn-orange">
+                <i class="fas fa-key"></i> Đổi mật khẩu
+            </a>
+            <a href="/User/EditProfile" class="btn btn-outline-orange">
+                <i class="fas fa-edit"></i> Chỉnh sửa thông tin
+            </a>
+            <a href="/Account/Logout" class="btn btn-danger">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </a>
+        </div>
+    </div>
+</div>

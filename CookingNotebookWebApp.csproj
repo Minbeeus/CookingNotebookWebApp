@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>25fbcd6e-dcea-4583-b1c1-b81c550a2523</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\Recipe\**" />
+    <Compile Remove="Pages\Review\**" />
+    <Compile Remove="Pages\User\**" />
+    <Compile Remove="Views\NewFolder\**" />
+    <Compile Remove="View\**" />
+    <Content Remove="Pages\Recipe\**" />
+    <Content Remove="Pages\Review\**" />
+    <Content Remove="Pages\User\**" />
+    <Content Remove="Views\NewFolder\**" />
+    <Content Remove="View\**" />
+    <EmbeddedResource Remove="Pages\Recipe\**" />
+    <EmbeddedResource Remove="Pages\Review\**" />
+    <EmbeddedResource Remove="Pages\User\**" />
+    <EmbeddedResource Remove="Views\NewFolder\**" />
+    <EmbeddedResource Remove="View\**" />
+    <None Remove="Pages\Recipe\**" />
+    <None Remove="Pages\Review\**" />
+    <None Remove="Pages\User\**" />
+    <None Remove="Views\NewFolder\**" />
+    <None Remove="View\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\Ingredients\" />
+    <Folder Include="wwwroot\assets\Dishes\" />
+  </ItemGroup>
+
+</Project>
