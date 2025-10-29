@@ -1,0 +1,56 @@
+@model CookingNotebookWebApp.Models.ViewModels.DashboardViewModel
+
+@{
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Trang tổng quan";
+    ViewData["ActiveMenu"] = "Dashboard";
+}
+
+<link rel="stylesheet" href="~/css/Admin/dashboard.css" />
+
+<div class="dashboard">
+    <h2 class="dashboard-title">📊 Bảng điều khiển</h2>
+    <p class="dashboard-subtitle">Tổng quan hoạt động của hệ thống</p>
+
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-icon bg-orange">
+                <i class="fas fa-carrot"></i>
+            </div>
+            <div class="stat-info">
+                <h4>Nguyên liệu</h4>
+                <p>@Model.IngredientCount loại</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon bg-green">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <div class="stat-info">
+                <h4>Món ăn</h4>
+                <p>@Model.RecipeCount công thức</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon bg-purple">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <h4>Người dùng</h4>
+                <p>@Model.UserCount thành viên</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon bg-blue">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-info">
+                <h4>Đánh giá</h4>
+                <p>@Model.ReviewCount đánh giá</p>
+            </div>
+        </div>
+    </div>
+</div>

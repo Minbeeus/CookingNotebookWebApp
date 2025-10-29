@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CookingNotebookWebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+730f81ba715031eb0ec0244b77bd6727a6576e84")]
 [assembly: System.Reflection.AssemblyProductAttribute("CookingNotebookWebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CookingNotebookWebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

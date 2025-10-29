@@ -1,0 +1,52 @@
+@model IEnumerable<CookingNotebookWebApp.Models.Ingredient>
+
+@{
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Danh sách nguyên liệu";
+    ViewData["ActiveMenu"] = "IngredientList";
+}
+
+<link rel="stylesheet" href="~/css/Admin/ingredientlist.css" />
+
+<div class="ingredient-list">
+    <h2 class="page-title">🥕 Quản lý nguyên liệu</h2>
+    <p class="page-subtitle">Danh sách tất cả nguyên liệu trong hệ thống</p>
+
+    <div class="table-responsive">
+        <table class="ingredient-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên nguyên liệu</th>
+                    <th>Mô tả</th>
+                    <th>Hình ảnh</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ingredient in Model)
+                {
+                    <tr>
+                        <td>@ingredient.IngredientId</td>
+                        <td>@ingredient.Name</td>
+                        <td>@(ingredient.Description?.Length > 50 ? ingredient.Description.Substring(0, 50) + "..." : ingredient.Description)</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(ingredient.ImagePath))
+                            {
+                                <img src="@ingredient.ImagePath" alt="@ingredient.Name" class="ingredient-image" />
+                            }
+                            else
+                            {
+                                <span>Không có</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("EditIngredient", "Admin", new { id = ingredient.IngredientId })" class="btn btn-edit">Sửa</a>
+                            <a href="@Url.Action("DeleteIngredient", "Admin", new { id = ingredient.IngredientId })" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa nguyên liệu này?')">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

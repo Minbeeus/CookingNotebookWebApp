@@ -1,0 +1,43 @@
+@model CookingNotebookWebApp.Models.Ingredient
+
+@{
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Chỉnh sửa nguyên liệu";
+    ViewData["ActiveMenu"] = "IngredientList";
+}
+
+<link rel="stylesheet" href="~/css/Admin/editingredient.css" />
+
+<div class="edit-ingredient">
+    <h2 class="page-title">🥕 Chỉnh sửa nguyên liệu</h2>
+    <p class="page-subtitle">Cập nhật thông tin nguyên liệu</p>
+
+    <form asp-action="EditIngredient" method="post" class="edit-form">
+        <input type="hidden" asp-for="IngredientId" />
+
+        <div class="form-group">
+            <label asp-for="Name">Tên nguyên liệu:</label>
+            <input asp-for="Name" class="form-control" required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Mô tả:</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ImagePath">Đường dẫn ảnh:</label>
+            <input asp-for="ImagePath" type="url" class="form-control" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-save">Lưu thay đổi</button>
+            <a href="@Url.Action("IngredientList", "Admin")" class="btn btn-cancel">Hủy</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -35,15 +35,17 @@ namespace CookingNotebookWebApp.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            // 🔍 Tìm người dùng đang hoạt động
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == model.Email && u.Status == true);
 
             if (user == null)
             {
-                ModelState.AddModelError("", "Tài khoản không tồn tại hoặc bị khóa.");
+                ModelState.AddModelError("", "Tài khoản không tồn tại hoặc đã bị khóa.");
                 return View(model);
             }
 
+            // 🔒 Kiểm tra mật khẩu
             bool isPasswordValid = BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash);
             if (!isPasswordValid)
             {
@@ -51,28 +53,36 @@ namespace CookingNotebookWebApp.Controllers
                 return View(model);
             }
 
-            // ✅ Tạo claims với UserId làm định danh chính
+            // 🪪 Tạo danh sách claim (định danh + quyền)
             var claims = new List<Claim>
-            {
-                new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new(ClaimTypes.Email, user.Email),
-                new(ClaimTypes.Name, user.FullName ?? user.Email),
-                new(ClaimTypes.Role, user.Role ?? "User")
-            };
+    {
+        new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+        new(ClaimTypes.Email, user.Email),
+        new(ClaimTypes.Name, user.FullName ?? user.Email),
+        new(ClaimTypes.Role, user.Role ?? "User")
+    };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties
             {
-                IsPersistent = true,
+                IsPersistent = model.RememberMe,
                 ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
             };
 
+            // ✅ Đăng nhập và lưu cookie
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties
             );
 
+            // 🎯 Điều hướng theo quyền
+            if (user.Role != null && user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
+
+            // Mặc định chuyển về trang người dùng
             return RedirectToAction("Homepage", "Homepage");
         }
 

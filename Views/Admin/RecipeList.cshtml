@@ -1,0 +1,51 @@
+@model IEnumerable<CookingNotebookWebApp.Models.Recipe>
+
+@{
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Danh sách công thức";
+    ViewData["ActiveMenu"] = "RecipeList";
+}
+
+<link rel="stylesheet" href="~/css/Admin/recipelist.css" />
+
+<div class="recipe-list">
+    <h2 class="page-title">🍳 Quản lý công thức</h2>
+    <p class="page-subtitle">Danh sách tất cả công thức nấu ăn</p>
+
+    <div class="table-responsive">
+        <table class="recipe-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tiêu đề</th>
+                    <th>Mô tả</th>
+                    <th>Thời gian chuẩn bị</th>
+                    <th>Thời gian nấu</th>
+                    <th>Khẩu phần</th>
+                    <th>Người tạo</th>
+                    <th>Ngày tạo</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var recipe in Model)
+                {
+                    <tr>
+                        <td>@recipe.RecipeId</td>
+                        <td>@recipe.Title</td>
+                        <td>@(recipe.Description?.Length > 50 ? recipe.Description.Substring(0, 50) + "..." : recipe.Description)</td>
+                        <td>@recipe.PrepTime phút</td>
+                        <td>@recipe.CookTime phút</td>
+                        <td>@recipe.Servings người</td>
+                        <td>@recipe.User?.FullName</td>
+                        <td>@recipe.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <a href="@Url.Action("EditRecipe", "Admin", new { id = recipe.RecipeId })" class="btn btn-edit">Sửa</a>
+                            <a href="@Url.Action("DeleteRecipe", "Admin", new { id = recipe.RecipeId })" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa công thức này?')">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

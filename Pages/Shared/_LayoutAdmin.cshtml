@@ -1,0 +1,64 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cooking Admin</title>
+    <link rel="stylesheet" href="~/css/Layout/admin.css" asp-append-version="true" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-logo">
+                <h2>🍳 Cooking Admin</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="@(ViewData["ActiveMenu"] as string == "Dashboard" ? "active" : "")">
+                    <a asp-controller="Admin" asp-action="Dashboard"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li class="@(ViewData["ActiveMenu"] as string == "IngredientList" ? "active" : "")">
+                <a asp-controller="Admin" asp-action="IngredientList"><i class="fas fa-carrot"></i> Nguyên liệu</a>
+                </li>
+                <li class="@(ViewData["ActiveMenu"] as string == "RecipeList" ? "active" : "")">
+                    <a asp-controller="Admin" asp-action="RecipeList"><i class="fas fa-utensils"></i> Công thức</a>
+                </li>
+                <li class="@(ViewData["ActiveMenu"] as string == "ReviewList" ? "active" : "")">
+                <a asp-controller="Admin" asp-action="ReviewList"><i class="fas fa-star"></i> Đánh giá</a>
+                </li>
+                <li class="@(ViewData["ActiveMenu"] as string == "UserList" ? "active" : "")">
+                    <a asp-controller="Admin" asp-action="UserList"><i class="fas fa-users"></i> Người dùng</a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h2>@ViewData["Title"]</h2>
+                <div class="admin-user">
+                    <img src="~/images/avatar-default.png" alt="User" />
+                    <span>Admin</span>
+                </div>
+            </header>
+
+            <section class="admin-content">
+                @RenderBody()
+            </section>
+
+            <footer class="admin-footer">
+                <p>&copy; @DateTime.Now.Year - Cooking Notebook Admin</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="~/js/Admin/dashboard.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

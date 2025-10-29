@@ -1,0 +1,100 @@
+@model IEnumerable<CookingNotebookWebApp.Models.Recipe>
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách công thức";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Recipe/index.css" />
+}
+
+<div class="recipe-page">
+    <!-- Header -->
+    <div class="recipe-header">
+        <h2>🍳 Danh sách công thức</h2>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Tìm công thức..." />
+            <button id="searchBtn">🔍</button>
+        </div>
+    </div>
+
+    <div class="recipe-container">
+        <!-- Sidebar bộ lọc -->
+        <aside class="recipe-sidebar">
+            <h3>Loại món ăn</h3>
+            <ul id="categoryList">
+                <li class="active" data-category="all">Tất cả</li>
+                <li data-category="Món chính">Món chính</li>
+                <li data-category="Món khai vị">Món khai vị</li>
+                <li data-category="Món tráng miệng">Món tráng miệng</li>
+                <li data-category="Nước uống">Nước uống</li>
+                <li data-category="Món ăn nhẹ">Món ăn nhẹ</li>
+                <li data-category="Khác">Khác</li>
+            </ul>
+
+            <h3>Thời gian chuẩn bị</h3>
+            <ul id="timeList">
+                <li class="active" data-time="all">Tất cả</li>
+                <li data-time="15">Dưới 15 phút</li>
+                <li data-time="30">15-30 phút</li>
+                <li data-time="60">30-60 phút</li>
+                <li data-time="120">Trên 60 phút</li>
+            </ul>
+        </aside>
+
+        <!-- Danh sách công thức -->
+        <section class="recipe-content">
+            <div class="view-toggle">
+                <button id="gridView" class="active">🔲 Dạng lưới</button>
+                <button id="listView">📋 Dạng danh sách</button>
+            </div>
+
+            <div class="recipe-list grid-view" id="recipeList">
+                @foreach (var recipe in Model)
+                {
+                    <div class="recipe-card"
+                         data-category="Món chính"
+                         data-time="@recipe.PrepTime"
+                         data-title="@recipe.Title"
+                         data-description="@recipe.Description"
+                         data-image="@recipe.ImageUrl"
+                         data-preptime="@recipe.PrepTime"
+                         data-cooktime="@recipe.CookTime"
+                         data-servings="@recipe.Servings"
+                         data-author="@recipe.User?.FullName">
+                        <img src="@recipe.ImageUrl" alt="@recipe.Title" />
+                        <div class="info">
+                            <h4>@recipe.Title</h4>
+                            <div class="meta">
+                                <span>⏱️ @recipe.PrepTime phút</span>
+                                <span>👥 @recipe.Servings người</span>
+                            </div>
+                            <p>@recipe.Description</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal chi tiết công thức -->
+    <div class="recipe-modal" id="recipeModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img id="modalImage" src="" alt="" />
+            <h3 id="modalTitle"></h3>
+            <p><strong>Tác giả:</strong> <span id="modalAuthor"></span></p>
+            <div class="modal-meta">
+                <p><strong>Thời gian chuẩn bị:</strong> <span id="modalPrepTime"></span> phút</p>
+                <p><strong>Thời gian nấu:</strong> <span id="modalCookTime"></span> phút</p>
+                <p><strong>Khẩu phần:</strong> <span id="modalServings"></span> người</p>
+            </div>
+            <p id="modalDescription"></p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Recipe/index.js"></script>
+}

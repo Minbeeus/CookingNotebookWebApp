@@ -1,0 +1,65 @@
+@model CookingNotebookWebApp.Models.Recipe
+
+@{
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Chỉnh sửa công thức";
+    ViewData["ActiveMenu"] = "RecipeList";
+}
+
+<link rel="stylesheet" href="~/css/Admin/editrecipe.css" />
+
+<div class="edit-recipe">
+    <h2 class="page-title">✏️ Chỉnh sửa công thức</h2>
+    <p class="page-subtitle">Cập nhật thông tin công thức</p>
+
+    <form asp-action="EditRecipe" method="post" class="edit-form">
+        <input type="hidden" asp-for="RecipeId" />
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="CreatedAt" />
+
+        <div class="form-group">
+            <label asp-for="Title">Tiêu đề:</label>
+            <input asp-for="Title" class="form-control" required />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Mô tả:</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="PrepTime">Thời gian chuẩn bị (phút):</label>
+                <input asp-for="PrepTime" type="number" class="form-control" required />
+                <span asp-validation-for="PrepTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CookTime">Thời gian nấu (phút):</label>
+                <input asp-for="CookTime" type="number" class="form-control" required />
+                <span asp-validation-for="CookTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Servings">Khẩu phần:</label>
+                <input asp-for="Servings" type="number" class="form-control" required />
+                <span asp-validation-for="Servings" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ImageUrl">URL hình ảnh:</label>
+            <input asp-for="ImageUrl" type="url" class="form-control" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-save">Lưu thay đổi</button>
+            <a href="@Url.Action("RecipeList", "Admin")" class="btn btn-cancel">Hủy</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

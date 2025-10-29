@@ -1,0 +1,53 @@
+@model IEnumerable<CookingNotebookWebApp.Models.Review>
+
+@{
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Danh sách đánh giá";
+    ViewData["ActiveMenu"] = "ReviewList";
+}
+
+<link rel="stylesheet" href="~/css/Admin/reviewlist.css" />
+
+<div class="review-list">
+    <h2 class="page-title">⭐ Quản lý đánh giá</h2>
+    <p class="page-subtitle">Danh sách tất cả đánh giá trong hệ thống</p>
+
+    <div class="table-responsive">
+        <table class="review-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Người đánh giá</th>
+                    <th>Công thức</th>
+                    <th>Đánh giá</th>
+                    <th>Nội dung</th>
+                    <th>Ngày đánh giá</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var review in Model)
+                {
+                    <tr>
+                        <td>@review.ReviewId</td>
+                        <td>@review.User?.FullName</td>
+                        <td>@review.Recipe?.Title</td>
+                        <td>
+                            <div class="rating">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <span class="star @(i <= review.Rating ? "filled" : "")">★</span>
+                                }
+                            </div>
+                        </td>
+                        <td>@(review.Comment?.Length > 50 ? review.Comment.Substring(0, 50) + "..." : review.Comment)</td>
+                        <td>@review.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <a href="@Url.Action("DeleteReview", "Admin", new { id = review.ReviewId })" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa đánh giá này?')">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

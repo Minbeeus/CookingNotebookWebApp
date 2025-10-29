@@ -1,0 +1,53 @@
+@model IEnumerable<CookingNotebookWebApp.Models.User>
+
+@{
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Danh sách người dùng";
+    ViewData["ActiveMenu"] = "UserList";
+}
+
+<link rel="stylesheet" href="~/css/Admin/userlist.css" />
+
+<div class="user-list">
+    <h2 class="page-title">👥 Quản lý người dùng</h2>
+    <p class="page-subtitle">Danh sách tất cả người dùng trong hệ thống</p>
+
+    <div class="table-responsive">
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Vai trò</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày tạo</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.UserId</td>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td>@user.Role</td>
+                        <td>
+                            <span class="status @(user.Status ? "active" : "inactive")">
+                                @(user.Status ? "Hoạt động" : "Khóa")
+                            </span>
+                        </td>
+                        <td>@user.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <a href="@Url.Action("EditUser", "Admin", new { id = user.UserId })" class="btn btn-edit">Sửa</a>
+                            <a href="@Url.Action("LockUnlock", "Admin", new { id = user.UserId })" class="btn @(user.Status ? "btn-lock" : "btn-unlock")">
+                                @(user.Status ? "Khóa" : "Mở khóa")
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
