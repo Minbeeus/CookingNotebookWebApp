@@ -22,10 +22,12 @@ namespace CookingNotebookWebApp.Models
         public int Servings { get; set; }
         
         public string? ImageUrl { get; set; }
-        
+
         public int UserId { get; set; }
         public User User { get; set; }
-        
+
+        public string? Note { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         
@@ -34,5 +36,18 @@ namespace CookingNotebookWebApp.Models
         public ICollection<RecipeStep> Steps { get; set; }
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Favorite> Favorites { get; set; }
+
+        // View properties
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public bool IsFavorited { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public double AverageRating { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public int UserRating { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public string? UserComment { get; set; }
     }
 }

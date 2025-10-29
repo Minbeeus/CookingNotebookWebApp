@@ -1,0 +1,75 @@
+@model IEnumerable<CookingNotebookWebApp.Models.Recipe>
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Công thức yêu thích";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Recipe/index.css" />
+}
+
+<div class="recipe-page">
+    <!-- Header -->
+    <div class="recipe-header">
+        <h2>❤️ Công thức yêu thích</h2>
+        <p class="favorites-subtitle">Các công thức bạn đã lưu vào danh sách yêu thích</p>
+    </div>
+
+    <div class="recipe-container">
+        <!-- No sidebar for favorites page -->
+        <section class="recipe-content" style="width: 100%;">
+            <div class="view-toggle">
+                <button id="gridView" class="active">🔲 Dạng lưới</button>
+                <button id="listView">📋 Dạng danh sách</button>
+            </div>
+
+            <div class="recipe-list grid-view" id="recipeList">
+                @if (Model.Any())
+                {
+                    @foreach (var recipe in Model)
+                    {
+                        <a href="@Url.Action("Details", "Recipe", new { id = recipe.RecipeId })" class="recipe-link">
+                            <div class="recipe-card"
+                                 data-category="Món chính"
+                                 data-time="@(recipe.PrepTime + recipe.CookTime)"
+                                 data-title="@recipe.Title"
+                                 data-description="@recipe.Description"
+                                 data-image="@recipe.ImageUrl"
+                                 data-preptime="@recipe.PrepTime"
+                                 data-cooktime="@recipe.CookTime"
+                                 data-servings="@recipe.Servings"
+                                 data-author="@recipe.User?.FullName"
+                                 data-totaltime="@(recipe.PrepTime + recipe.CookTime)">
+                                <img src="@recipe.ImageUrl" alt="@recipe.Title" />
+                                <div class="info">
+                                    <h4>@recipe.Title</h4>
+                                    <div class="meta">
+                                        <span>⏱️ @(recipe.PrepTime + recipe.CookTime) phút</span>
+                                        <span>👥 @recipe.Servings người</span>
+                                    </div>
+                                    <p>@recipe.Description</p>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <div class="no-favorites">
+                        <div class="no-favorites-content">
+                            <i class="fas fa-heart-broken" style="font-size: 4rem; color: #ddd; margin-bottom: 20px;"></i>
+                            <h3 style="color: #666; margin-bottom: 10px;">Chưa có công thức yêu thích</h3>
+                            <p style="color: #999; margin-bottom: 20px;">Hãy khám phá và lưu những công thức bạn thích!</p>
+                            <a href="@Url.Action("Index", "Recipe")" class="btn btn-primary" style="padding: 10px 20px; background: #f28c38; color: white; text-decoration: none; border-radius: 6px;">Khám phá công thức</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Recipe/index.js"></script>
+}

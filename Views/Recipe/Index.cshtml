@@ -33,7 +33,7 @@
                 <li data-category="Khác">Khác</li>
             </ul>
 
-            <h3>Thời gian chuẩn bị</h3>
+            <h3>Thời gian thực hiện</h3>
             <ul id="timeList">
                 <li class="active" data-time="all">Tất cả</li>
                 <li data-time="15">Dưới 15 phút</li>
@@ -53,26 +53,29 @@
             <div class="recipe-list grid-view" id="recipeList">
                 @foreach (var recipe in Model)
                 {
-                    <div class="recipe-card"
-                         data-category="Món chính"
-                         data-time="@recipe.PrepTime"
-                         data-title="@recipe.Title"
-                         data-description="@recipe.Description"
-                         data-image="@recipe.ImageUrl"
-                         data-preptime="@recipe.PrepTime"
-                         data-cooktime="@recipe.CookTime"
-                         data-servings="@recipe.Servings"
-                         data-author="@recipe.User?.FullName">
-                        <img src="@recipe.ImageUrl" alt="@recipe.Title" />
-                        <div class="info">
-                            <h4>@recipe.Title</h4>
-                            <div class="meta">
-                                <span>⏱️ @recipe.PrepTime phút</span>
-                                <span>👥 @recipe.Servings người</span>
-                            </div>
-                            <p>@recipe.Description</p>
-                        </div>
+                <a href="@Url.Action("Details", "Recipe", new { id = recipe.RecipeId })" class="recipe-link">
+                <div class="recipe-card"
+                    data-category="Món chính"
+                    data-time="@(recipe.PrepTime + recipe.CookTime)"
+                    data-title="@recipe.Title"
+                    data-description="@recipe.Description"
+                    data-image="@recipe.ImageUrl"
+                    data-preptime="@recipe.PrepTime"
+                    data-cooktime="@recipe.CookTime"
+                    data-servings="@recipe.Servings"
+                    data-author="@recipe.User?.FullName"
+                     data-totaltime="@(recipe.PrepTime + recipe.CookTime)">
+                    <img src="@recipe.ImageUrl" alt="@recipe.Title" />
+                <div class="info">
+                    <h4>@recipe.Title</h4>
+                <div class="meta">
+                    <span>⏱️ @(recipe.PrepTime + recipe.CookTime) phút</span>
+                        <span>👥 @recipe.Servings người</span>
                     </div>
+                        <p>@recipe.Description</p>
+                        </div>
+                        </div>
+                    </a>
                 }
             </div>
         </section>

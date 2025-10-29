@@ -1,4 +1,4 @@
-﻿using CookingNotebookWebApp.Data;
+using CookingNotebookWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 

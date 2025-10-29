@@ -17,129 +17,137 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CookingNotebookWebApp
 build_property.RootNamespace = CookingNotebookWebApp
-build_property.ProjectDir = D:\VisualStudio\CookingNotebookWebApp\CookingNotebookWebApp\
+build_property.ProjectDir = d:\VisualStudio\CookingNotebookWebApp\CookingNotebookWebApp\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\VisualStudio\CookingNotebookWebApp\CookingNotebookWebApp
+build_property.MSBuildProjectDirectory = d:\VisualStudio\CookingNotebookWebApp\CookingNotebookWebApp
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Error.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Index.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Privacy.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Shared/_LayoutAdmin.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Shared/_LayoutAdmin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXRBZG1pbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/_ViewImports.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/_ViewStart.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Account/Login.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Account/Register.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/DashBoard.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/DashBoard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaEJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/EditIngredient.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/EditIngredient.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdEluZ3JlZGllbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/EditRecipe.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/EditRecipe.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFJlY2lwZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/EditUser.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/EditUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFVzZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/IngredientList.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/IngredientList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5ncmVkaWVudExpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/LockUnlock.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/LockUnlock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTG9ja1VubG9jay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/RecipeList.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/RecipeList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUmVjaXBlTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/ReviewList.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/ReviewList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUmV2aWV3TGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/UserList.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Admin/UserList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlckxpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Favorite/Index.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Favorites/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmF2b3JpdGVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Favorite/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmF2b3JpdGVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Homepage/Homepage.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Homepage/Homepage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZXBhZ2VcSG9tZXBhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Ingredient/Index.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Ingredient/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5ncmVkaWVudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Recipe/Index.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Recipe/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjaXBlXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Recipe/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVjaXBlXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Review/Create.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Review/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV2aWV3XENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Review/Delete.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Review/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV2aWV3XERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Review/Edit.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/Review/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV2aWV3XEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/User/ChangePassword.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/User/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/User/EditProfile.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/User/EditProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxFZGl0UHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/User/Profile.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Views/User/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Shared/_Layout.cshtml]
+[d:/VisualStudio/CookingNotebookWebApp/CookingNotebookWebApp/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-z596v7oqk5

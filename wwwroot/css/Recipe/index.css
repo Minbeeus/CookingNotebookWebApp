@@ -133,6 +133,20 @@
             border-color: #f28c38;
         }
 
+/* ========== Recipe Link ========== */
+.recipe-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s;
+}
+
+.recipe-link:hover {
+    text-decoration: none;
+    color: inherit;
+    transform: translateY(-2px);
+}
+
 /* ========== Recipe List ========== */
 .recipe-list {
     display: grid;
@@ -283,6 +297,35 @@
         color: #ccc;
     }
 
+/* ========== Favorites Page ========== */
+.favorites-subtitle {
+    color: #666;
+    font-size: 1rem;
+    margin-top: 10px;
+    font-weight: normal;
+}
+
+.no-favorites {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.no-favorites-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.no-favorites-content h3 {
+    color: #5a3210;
+    margin-bottom: 10px;
+}
+
+.no-favorites-content p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
 /* ========== Responsive ========== */
 @media (max-width: 768px) {
     .recipe-page {
@@ -322,5 +365,9 @@
     .modal-content {
         width: 95%;
         margin: 10% auto;
+    }
+
+    .no-favorites {
+        padding: 40px 20px;
     }
 }
