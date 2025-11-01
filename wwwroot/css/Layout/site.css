@@ -1,4 +1,4 @@
-﻿/* =========================
+/* =========================
    RESET & TOÀN TRANG
 ========================= */
 * {
@@ -9,8 +9,8 @@
 }
 
 body {
-    background-color: #fff8f2; /* Nền be nhạt */
-    color: #4e342e; /* Chữ nâu đậm */
+    background-color: #1A252F; /* Nền xanh tối */
+    color: #F8F9FA; /* Chữ trắng sáng */
     min-height: 100vh;
 }
 

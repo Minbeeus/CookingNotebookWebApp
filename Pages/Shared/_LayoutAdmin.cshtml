@@ -8,8 +8,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Cooking Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/Layout/admin.css" asp-append-version="true" />
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -17,34 +20,38 @@
         <!-- Sidebar -->
         <aside class="admin-sidebar">
             <div class="sidebar-logo">
-                <h2>🍳 Cooking Admin</h2>
+            <h2>Cooking Admin</h2>
             </div>
             <ul class="sidebar-menu">
-                <li class="@(ViewData["ActiveMenu"] as string == "Dashboard" ? "active" : "")">
-                    <a asp-controller="Admin" asp-action="Dashboard"><i class="fas fa-home"></i> Dashboard</a>
-                </li>
-                <li class="@(ViewData["ActiveMenu"] as string == "IngredientList" ? "active" : "")">
-                <a asp-controller="Admin" asp-action="IngredientList"><i class="fas fa-carrot"></i> Nguyên liệu</a>
-                </li>
-                <li class="@(ViewData["ActiveMenu"] as string == "RecipeList" ? "active" : "")">
-                    <a asp-controller="Admin" asp-action="RecipeList"><i class="fas fa-utensils"></i> Công thức</a>
-                </li>
-                <li class="@(ViewData["ActiveMenu"] as string == "ReviewList" ? "active" : "")">
-                <a asp-controller="Admin" asp-action="ReviewList"><i class="fas fa-star"></i> Đánh giá</a>
-                </li>
-                <li class="@(ViewData["ActiveMenu"] as string == "UserList" ? "active" : "")">
-                    <a asp-controller="Admin" asp-action="UserList"><i class="fas fa-users"></i> Người dùng</a>
-                </li>
+            <li class="@(ViewData["ActiveMenu"]?.ToString() == "Dashboard" ? "active" : "")">
+            <a asp-controller="Admin" asp-action="Dashboard">Dashboard</a>
+            </li>
+            <li class="@(ViewData["ActiveMenu"]?.ToString() == "IngredientList" ? "active" : "")">
+            <a asp-controller="Admin" asp-action="IngredientList">Nguyên liệu</a>
+            </li>
+            <li class="@(ViewData["ActiveMenu"]?.ToString() == "RecipeList" ? "active" : "")">
+            <a asp-controller="Admin" asp-action="RecipeList">Công thức</a>
+            </li>
+            <li class="@(ViewData["ActiveMenu"]?.ToString() == "ReviewList" ? "active" : "")">
+            <a asp-controller="Admin" asp-action="ReviewList">Đánh giá</a>
+            </li>
+            <li class="@(ViewData["ActiveMenu"]?.ToString() == "UserList" ? "active" : "")">
+            <a asp-controller="Admin" asp-action="UserList">Người dùng</a>
+            </li>
             </ul>
         </aside>
 
         <!-- Main content -->
         <main class="admin-main">
             <header class="admin-header">
-                <h2>@ViewData["Title"]</h2>
-                <div class="admin-user">
-                    <img src="~/images/avatar-default.png" alt="User" />
-                    <span>Admin</span>
+            <h2>@ViewData["Title"]</h2>
+            <div class="admin-user-dropdown dropdown">
+            <button class="btn btn-link dropdown-toggle" type="button" id="adminDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-user"></i> Admin
+                </button>
+                    <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                        <a class="dropdown-item" href="@Url.Action("Logout", "Account")"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                    </div>
                 </div>
             </header>
 
@@ -58,7 +65,6 @@
         </main>
     </div>
 
-    <script src="~/js/Admin/dashboard.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

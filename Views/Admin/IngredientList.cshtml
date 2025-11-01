@@ -9,8 +9,24 @@
 <link rel="stylesheet" href="~/css/Admin/ingredientlist.css" />
 
 <div class="ingredient-list">
-    <h2 class="page-title">🥕 Quản lý nguyên liệu</h2>
+    <h2 class="page-title">Quản lý nguyên liệu</h2>
     <p class="page-subtitle">Danh sách tất cả nguyên liệu trong hệ thống</p>
+
+    <div class="actions-bar">
+        <div class="search-section">
+            <form method="get" class="search-form" style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" name="searchTerm" placeholder="Tìm kiếm nguyên liệu..." class="form-control" style="width: 250px;" value="@Context.Request.Query["searchTerm"]" />
+                <button type="submit" class="btn" style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px;">Tìm kiếm</button>
+                @if (!string.IsNullOrEmpty(Context.Request.Query["searchTerm"]))
+                {
+                    <a href="@Url.Action("IngredientList", "Admin")" class="btn" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; text-decoration: none;">Xóa tìm kiếm</a>
+                }
+            </form>
+        </div>
+        <div class="action-section">
+            <a href="@Url.Action("CreateIngredient", "Admin")" class="btn" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; text-decoration: none;">Thêm nguyên liệu</a>
+        </div>
+    </div>
 
     <div class="table-responsive">
         <table class="ingredient-table">
@@ -40,13 +56,54 @@
                                 <span>Không có</span>
                             }
                         </td>
-                        <td>
-                            <a href="@Url.Action("EditIngredient", "Admin", new { id = ingredient.IngredientId })" class="btn btn-edit">Sửa</a>
-                            <a href="@Url.Action("DeleteIngredient", "Admin", new { id = ingredient.IngredientId })" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa nguyên liệu này?')">Xóa</a>
+                        <td class="action-buttons">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="viewIngredientDetails(@ingredient.IngredientId)" style="background: #17a2b8; border-color: #17a2b8;">Xem</button>
+                        <a href="@Url.Action("EditIngredient", "Admin", new { id = ingredient.IngredientId })" class="btn btn-warning btn-sm" style="background: #ffc107; border-color: #ffc107; color: #212529;">Sửa</a>
+                        <a href="@Url.Action("DeleteIngredient", "Admin", new { id = ingredient.IngredientId })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa nguyên liệu này?')">Xóa</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <!-- Ingredient Details Modal -->
+    <div class="modal fade" id="ingredientDetailsModal" tabindex="-1" role="dialog" aria-labelledby="ingredientDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ingredientDetailsModalLabel">Chi tiết nguyên liệu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="ingredientDetailsContent">
+                    <!-- Content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        function viewIngredientDetails(ingredientId) {
+            $.ajax({
+                url: '@Url.Action("GetIngredientDetails", "Admin")',
+                type: 'GET',
+                data: { id: ingredientId },
+                success: function(data) {
+                    $('#ingredientDetailsContent').html(data);
+                    $('#ingredientDetailsModal').modal('show');
+                },
+                error: function() {
+                    alert('Không thể tải thông tin nguyên liệu.');
+                }
+            });
+        }
+    </script>
+}
+

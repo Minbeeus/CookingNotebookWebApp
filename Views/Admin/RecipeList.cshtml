@@ -9,8 +9,24 @@
 <link rel="stylesheet" href="~/css/Admin/recipelist.css" />
 
 <div class="recipe-list">
-    <h2 class="page-title">🍳 Quản lý công thức</h2>
+    <h2 class="page-title">Quản lý công thức</h2>
     <p class="page-subtitle">Danh sách tất cả công thức nấu ăn</p>
+
+    <div class="actions-bar">
+        <div class="search-section">
+            <form method="get" class="search-form" style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" name="searchTerm" placeholder="Tìm kiếm công thức..." class="form-control" style="width: 250px;" value="@Context.Request.Query["searchTerm"]" />
+                <button type="submit" class="btn" style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px;">Tìm kiếm</button>
+                @if (!string.IsNullOrEmpty(Context.Request.Query["searchTerm"]))
+                {
+                    <a href="@Url.Action("RecipeList", "Admin")" class="btn" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; text-decoration: none;">Xóa tìm kiếm</a>
+                }
+            </form>
+        </div>
+        <div class="action-section">
+            <a href="@Url.Action("CreateRecipe", "Admin")" class="btn" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; text-decoration: none;">Thêm công thức</a>
+        </div>
+    </div>
 
     <div class="table-responsive">
         <table class="recipe-table">
@@ -39,13 +55,54 @@
                         <td>@recipe.Servings người</td>
                         <td>@recipe.User?.FullName</td>
                         <td>@recipe.CreatedAt.ToString("dd/MM/yyyy")</td>
-                        <td>
-                            <a href="@Url.Action("EditRecipe", "Admin", new { id = recipe.RecipeId })" class="btn btn-edit">Sửa</a>
-                            <a href="@Url.Action("DeleteRecipe", "Admin", new { id = recipe.RecipeId })" class="btn btn-delete" onclick="return confirm('Bạn có chắc muốn xóa công thức này?')">Xóa</a>
+                        <td class="action-buttons">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="viewRecipeDetails(@recipe.RecipeId)" style="background: #17a2b8; border-color: #17a2b8;">Xem</button>
+                        <a href="@Url.Action("EditRecipe", "Admin", new { id = recipe.RecipeId })" class="btn btn-warning btn-sm" style="background: #ffc107; border-color: #ffc107; color: #212529;">Sửa</a>
+                        <a href="@Url.Action("DeleteRecipe", "Admin", new { id = recipe.RecipeId })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa công thức này?')">Xóa</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <!-- Recipe Details Modal -->
+    <div class="modal fade" id="recipeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="recipeDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="recipeDetailsModalLabel">Chi tiết công thức</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="recipeDetailsContent">
+                    <!-- Content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        function viewRecipeDetails(recipeId) {
+            $.ajax({
+                url: '@Url.Action("GetRecipeDetails", "Admin")',
+                type: 'GET',
+                data: { id: recipeId },
+                success: function(data) {
+                    $('#recipeDetailsContent').html(data);
+                    $('#recipeDetailsModal').modal('show');
+                },
+                error: function() {
+                    alert('Không thể tải thông tin công thức.');
+                }
+            });
+        }
+    </script>
+}
+

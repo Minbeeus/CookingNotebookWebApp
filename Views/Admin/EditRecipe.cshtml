@@ -1,4 +1,4 @@
-@model CookingNotebookWebApp.Models.Recipe
+@model CookingNotebookWebApp.Models.ViewModels.EditRecipeViewModel
 
 @{
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
@@ -13,44 +13,93 @@
     <p class="page-subtitle">Cập nhật thông tin công thức</p>
 
     <form asp-action="EditRecipe" method="post" class="edit-form">
-        <input type="hidden" asp-for="RecipeId" />
-        <input type="hidden" asp-for="UserId" />
-        <input type="hidden" asp-for="CreatedAt" />
+        <input type="hidden" asp-for="Recipe.RecipeId" />
+        <input type="hidden" asp-for="Recipe.UserId" />
+        <input type="hidden" asp-for="Recipe.CreatedAt" />
 
         <div class="form-group">
-            <label asp-for="Title">Tiêu đề:</label>
-            <input asp-for="Title" class="form-control" required />
-            <span asp-validation-for="Title" class="text-danger"></span>
+            <label asp-for="Recipe.Title">Tiêu đề:</label>
+            <input asp-for="Recipe.Title" class="form-control" required />
+            <span asp-validation-for="Recipe.Title" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Description">Mô tả:</label>
-            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <label asp-for="Recipe.Description">Mô tả:</label>
+            <textarea asp-for="Recipe.Description" class="form-control" rows="3"></textarea>
         </div>
 
         <div class="form-row">
             <div class="form-group">
-                <label asp-for="PrepTime">Thời gian chuẩn bị (phút):</label>
-                <input asp-for="PrepTime" type="number" class="form-control" required />
-                <span asp-validation-for="PrepTime" class="text-danger"></span>
+                <label asp-for="Recipe.PrepTime">Thời gian chuẩn bị (phút):</label>
+                <input asp-for="Recipe.PrepTime" type="number" class="form-control" required />
+                <span asp-validation-for="Recipe.PrepTime" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="CookTime">Thời gian nấu (phút):</label>
-                <input asp-for="CookTime" type="number" class="form-control" required />
-                <span asp-validation-for="CookTime" class="text-danger"></span>
+                <label asp-for="Recipe.CookTime">Thời gian nấu (phút):</label>
+                <input asp-for="Recipe.CookTime" type="number" class="form-control" required />
+                <span asp-validation-for="Recipe.CookTime" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Servings">Khẩu phần:</label>
-                <input asp-for="Servings" type="number" class="form-control" required />
-                <span asp-validation-for="Servings" class="text-danger"></span>
+                <label asp-for="Recipe.Servings">Khẩu phần:</label>
+                <input asp-for="Recipe.Servings" type="number" class="form-control" required />
+                <span asp-validation-for="Recipe.Servings" class="text-danger"></span>
             </div>
         </div>
 
         <div class="form-group">
-            <label asp-for="ImageUrl">URL hình ảnh:</label>
-            <input asp-for="ImageUrl" type="url" class="form-control" />
+            <label asp-for="Recipe.ImageUrl">URL hình ảnh:</label>
+            <input asp-for="Recipe.ImageUrl" type="url" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Recipe.Note">Ghi chú:</label>
+            <textarea asp-for="Recipe.Note" class="form-control" rows="2"></textarea>
+        </div>
+
+        <h3>Nguyên liệu</h3>
+        <div class="ingredients-section">
+            @if (Model.Ingredients.Any())
+            {
+                <ul class="ingredients-list">
+                    @foreach (var ingredient in Model.Ingredients)
+                    {
+                        <li>@ingredient.Quantity @ingredient.Unit @ingredient.Ingredient.Name @(string.IsNullOrEmpty(ingredient.Notes) ? "" : $"({ingredient.Notes})")</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>Không có nguyên liệu nào.</p>
+            }
+        </div>
+
+        <h3>Các bước thực hiện</h3>
+        <div class="steps-section">
+            @if (Model.Steps.Any())
+            {
+                <ol class="steps-list">
+                    @foreach (var step in Model.Steps.OrderBy(s => s.StepNumber))
+                    {
+                        <li>
+                            <p>@step.Description</p>
+                            @if (!string.IsNullOrEmpty(step.ImageUrl))
+                            {
+                                <img src="@step.ImageUrl" alt="Step image" style="max-width: 200px;" />
+                            }
+                            @if (step.TimerInMinutes.HasValue)
+                            {
+                                <p><strong>Thời gian:</strong> @step.TimerInMinutes phút</p>
+                            }
+                        </li>
+                    }
+                </ol>
+            }
+            else
+            {
+                <p>Không có bước nào.</p>
+            }
         </div>
 
         <div class="form-actions">

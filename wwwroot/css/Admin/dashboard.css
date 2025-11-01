@@ -1,19 +1,19 @@
-﻿.dashboard {
+.dashboard {
     padding: 30px;
-    background: #fff8f2;
+    background: #1B263B;
     min-height: calc(100vh - 80px);
     font-family: "Segoe UI", sans-serif;
 }
 
 .dashboard-title {
-    color: #e67e22;
+    color: #E0E1DD;
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 5px;
 }
 
 .dashboard-subtitle {
-    color: #6b4a2b;
+    color: #B0B3B8;
     font-size: 1rem;
     margin-bottom: 25px;
 }
@@ -25,9 +25,9 @@
 }
 
 .stat-card {
-    background: #fff;
+    background: #2A3441;
     border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
     display: flex;
     align-items: center;
     padding: 20px 25px;
@@ -52,27 +52,51 @@
 }
 
 .bg-orange {
-    background: #f68b3c;
+    background: #68C69F;
+}
+
+.bg-orange::before {
+    content: "\f0c0"; /* fa-users */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: #FFFFFF;
 }
 
 .bg-green {
-    background: #27ae60;
+    background: #A9A9A9;
+}
+
+.bg-green::before {
+    content: "\f543"; /* fa-utensils */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: #FFFFFF;
 }
 
 .bg-purple {
-    background: #8e44ad;
+    background: #D9534F;
+}
+
+.bg-purple::before {
+    content: "\f086"; /* fa-comments */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: #FFFFFF;
 }
 
 .stat-info h4 {
     margin: 0;
-    color: #5a3d1e;
+    color: #FFFFFF;
     font-size: 1.1rem;
     font-weight: 600;
 }
 
 .stat-info p {
     margin: 5px 0 0;
-    color: #333;
+    color: #E0E1DD;
     font-size: 1rem;
     font-weight: 500;
 }

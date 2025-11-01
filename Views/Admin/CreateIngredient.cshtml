@@ -1,0 +1,41 @@
+@model CookingNotebookWebApp.Models.Ingredient
+
+@{
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Tạo nguyên liệu mới";
+    ViewData["ActiveMenu"] = "IngredientList";
+}
+
+<link rel="stylesheet" href="~/css/Admin/editingredient.css" />
+
+<div class="edit-ingredient">
+    <h2 class="page-title">➕ Tạo nguyên liệu mới</h2>
+    <p class="page-subtitle">Thêm nguyên liệu mới vào hệ thống</p>
+
+    <form asp-action="CreateIngredient" method="post" class="edit-form">
+        <div class="form-group">
+            <label asp-for="Name">Tên nguyên liệu:</label>
+            <input asp-for="Name" class="form-control" required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Mô tả:</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ImagePath">Đường dẫn ảnh:</label>
+            <input asp-for="ImagePath" type="url" class="form-control" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-save">Tạo nguyên liệu</button>
+            <a href="@Url.Action("IngredientList", "Admin")" class="btn btn-cancel">Hủy</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,4 +1,4 @@
-﻿/* ========== RESET ========== */
+/* ========== RESET ========== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,8 +7,8 @@
 
 body {
     font-family: "Segoe UI", sans-serif;
-    background-color: #f5f6fa;
-    color: #333;
+    background-color: #1B263B;
+    color: #E0E1DD;
     height: 100vh;
     overflow: hidden;
 }
@@ -22,8 +22,8 @@ body {
 /* ========== SIDEBAR ========== */
 .admin-sidebar {
     width: 250px;
-    background: #1f2532;
-    color: #fff;
+    background: #0D1B2A;
+    color: #E0E1DD;
     display: flex;
     flex-direction: column;
     transition: width 0.3s ease;
@@ -56,7 +56,7 @@ body {
 
         .sidebar-menu li a {
             text-decoration: none;
-            color: #d6d6d6;
+            color: #E0E1DD;
             font-size: 0.95rem;
             display: flex;
             align-items: center;
@@ -76,11 +76,11 @@ body {
         }
 
         .sidebar-menu li.active {
-            background: linear-gradient(90deg, #f68b3c 0%, #e67e22 100%);
+            background: #2D5A47;
         }
 
             .sidebar-menu li.active a {
-                color: #fff;
+                color: #68C69F;
                 font-weight: 600;
             }
 
@@ -108,22 +108,57 @@ body {
         color: #2c3e50;
     }
 
-.admin-user {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.admin-user-dropdown {
+position: relative;
 }
 
-    .admin-user img {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        border: 2px solid #f68b3c;
+    .admin-user-dropdown .btn-link {
+        display: flex;
+    align-items: center;
+gap: 8px;
+color: #555;
+text-decoration: none;
+font-weight: 500;
+    padding: 8px 12px;
+        border: none;
+    background: transparent;
+border-radius: 6px;
+transition: background-color 0.2s ease;
+}
+
+    .admin-user-dropdown .btn-link:hover {
+        background-color: #f8f9fa;
+        color: #333;
     }
 
-    .admin-user span {
-        font-weight: 500;
+    .admin-user-dropdown .dropdown-menu {
+        right: 0;
+        left: auto;
+        min-width: 180px;
+        border: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        margin-top: 8px;
+    }
+
+    .admin-user-dropdown .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
         color: #555;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+
+    .admin-user-dropdown .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color: #dc3545;
+    }
+
+    .admin-user-dropdown .dropdown-item i {
+        width: 16px;
+        text-align: center;
     }
 
 /* Content */

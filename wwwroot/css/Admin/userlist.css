@@ -1,0 +1,104 @@
+.user-list {
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #E0E1DD;
+}
+
+.page-subtitle {
+    color: #B0B3B8;
+    margin-bottom: 30px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.user-table th, .user-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: #E0E1DD;
+}
+
+.user-table th {
+    background: #68C69F;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.user-table tbody tr {
+    background: #3A475C;
+}
+
+.user-table tbody tr:hover {
+    background: #4A5D7A;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status.inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-edit {
+    background: #007bff;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #0056b3;
+}
+
+.btn-lock {
+    background: #ffc107;
+    color: #212529;
+}
+
+.btn-lock:hover {
+    background: #e0a800;
+}
+
+.btn-unlock {
+    background: #68C69F;
+    color: white;
+}
+
+.btn-unlock:hover {
+    background: #4CAF9F;
+}
