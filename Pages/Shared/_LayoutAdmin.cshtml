@@ -10,7 +10,7 @@
     <title>@ViewData["Title"] - Cooking Admin</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/Layout/admin.css" asp-append-version="true" />
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -46,10 +46,11 @@
             <header class="admin-header">
             <h2>@ViewData["Title"]</h2>
             <div class="admin-user-dropdown dropdown">
-            <button class="btn btn-link dropdown-toggle" type="button" id="adminDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-user"></i> Admin
-                </button>
-                    <div class="dropdown-menu" aria-labelledby="adminDropdown">
+            <button class="btn btn-link dropdown-toggle" type="button" id="adminDropdown" onclick="toggleAdminDropdown()" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i> Admin
+            </button>
+            <div class="dropdown-menu" id="adminDropdownMenu" aria-labelledby="adminDropdown">
+                    <a class="dropdown-item" href="/"><i class="fas fa-home"></i> Trang người dùng</a>
                         <a class="dropdown-item" href="@Url.Action("Logout", "Account")"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                     </div>
                 </div>
@@ -66,5 +67,21 @@
     </div>
 
     @RenderSection("Scripts", required: false)
+
+    <script>
+        function toggleAdminDropdown() {
+            var menu = document.getElementById('adminDropdownMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Đóng menu khi click bên ngoài
+        document.addEventListener('click', function(event) {
+            var dropdown = document.querySelector('.admin-user-dropdown');
+            var menu = document.getElementById('adminDropdownMenu');
+            if (!dropdown.contains(event.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 </html>

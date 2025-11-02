@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CookingNotebookWebApp.Models.Ingredient>
+@model IEnumerable<CookingNotebookWebApp.Models.Ingredient>
 
 @{
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -22,6 +22,9 @@
     <div class="ingredient-container">
         <!-- Sidebar bộ lọc -->
         <aside class="ingredient-sidebar">
+        <div class="filter-header">
+                <button id="clearFilters" class="clear-filters-btn">❌ Xoá lọc</button>
+            </div>
             <h3>Phân loại</h3>
             <ul id="categoryList">
                 <li class="active" data-category="all">Tất cả</li>

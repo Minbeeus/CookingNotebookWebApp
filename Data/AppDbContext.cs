@@ -19,10 +19,15 @@ namespace CookingNotebookWebApp.Data
         {
         base.OnModelCreating(modelBuilder);
 
+        // Unique index on RecipeId and StepNumber for RecipeStep
+        modelBuilder.Entity<RecipeStep>()
+            .HasIndex(rs => new { rs.RecipeId, rs.StepNumber })
+            .IsUnique();
+
         // Ánh xạ bảng "User" cho entity User
         modelBuilder.Entity<User>().ToTable("User");
 
-        // Khóa chính phức hợp cho bảng RecipeIngredient
+        // Khóa chính composite cho bảng RecipeIngredient
         modelBuilder.Entity<RecipeIngredient>()
         .HasKey(ri => new { ri.RecipeId, ri.IngredientId });
 

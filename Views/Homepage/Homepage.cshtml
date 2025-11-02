@@ -1,4 +1,4 @@
-﻿@{
+@{
     Layout = "~/Pages/Shared/_Layout.cshtml";
     ViewData["Title"] = "Cooking Notebook - Trang chủ";
 }
@@ -10,7 +10,7 @@
         <div class="hero-content">
             <h1>Tìm kiếm & lưu giữ công thức nấu ăn</h1>
             <p>Khám phá - Chia sẻ - Cùng nhau nấu ăn ngon hơn!</p>
-            <a href="/Account/Login" class="btn-main">Khám phá ngay</a>
+            <a href="@(User.Identity?.IsAuthenticated == true ? Url.Action("Index", "Recipe") : Url.Action("Login", "Account"))" class="btn-main">Khám phá ngay</a>
         </div>
     </header>
 

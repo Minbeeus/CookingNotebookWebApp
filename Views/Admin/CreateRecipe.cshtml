@@ -6,13 +6,17 @@
     ViewData["ActiveMenu"] = "RecipeList";
 }
 
-<link rel="stylesheet" href="~/css/Admin/editrecipe.css" />
+<link rel="stylesheet" href="~/css/Admin/recipelist.css" />
 
 <div class="edit-recipe">
     <h2 class="page-title">➕ Tạo công thức mới</h2>
     <p class="page-subtitle">Thêm công thức nấu ăn mới</p>
 
-    <form asp-action="CreateRecipe" method="post" class="edit-form">
+    <div id='ingredientOptionsTemplate' style='display: none;'>
+        <option value=''>-- Chọn nguyên liệu --</option>
+        @ViewBag.AllIngredientOptions
+    </div>
+    <form id='createRecipeForm' enctype='multipart/form-data' class="edit-form">
         <div class="form-group">
             <label asp-for="Title">Tiêu đề:</label>
             <input asp-for="Title" class="form-control" required />
@@ -45,22 +49,38 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="ImageUrl">URL hình ảnh:</label>
-            <input asp-for="ImageUrl" type="url" class="form-control" />
+        <label for="imageFile">Hình ảnh:</label>
+        <input type="file" name="imageFile" id="imageFile" class="form-control" accept="image/*" />
+            <small class="text-muted">Chọn hình ảnh cho công thức (tùy chọn)</small>
         </div>
 
+        <input type="hidden" asp-for="UserId" />
+        <div class="form-group">
+            <label style='color: #E0E1DD; font-weight: 500;'>Nguyên liệu:</label>
+            <div id='ingredientsContainer' style='min-height: 50px; border: 1px dashed #3A475C; padding: 10px; margin-bottom: 10px;'>
+                <!-- Ingredients will be added here -->
+            </div>
+            <button type='button' id='addIngredientBtn' class='btn' style='background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; margin-top: 10px;'>Thêm nguyên liệu</button>
+        </div>
+        <div class="form-group">
+            <label style='color: #E0E1DD; font-weight: 500;'>Các bước thực hiện:</label>
+            <div id='stepsContainer' style='min-height: 50px; border: 1px dashed #3A475C; padding: 10px; margin-bottom: 10px;'>
+                <!-- Steps will be added here -->
+            </div>
+            <button type='button' id='addStepBtn' class='btn' style='background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; margin-top: 10px;'>Thêm bước</button>
+        </div>
         <div class="form-group">
             <label asp-for="Note">Ghi chú:</label>
             <textarea asp-for="Note" class="form-control" rows="2"></textarea>
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-save">Tạo công thức</button>
+            <button type="button" onclick="saveCreateRecipe()" class="btn btn-save">Tạo công thức</button>
             <a href="@Url.Action("RecipeList", "Admin")" class="btn btn-cancel">Hủy</a>
         </div>
     </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Admin/recipelist.js"></script>
 }

@@ -6,7 +6,102 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/Recipe/index.css" />
+<link rel="stylesheet" href="~/css/Recipe/index.css" />
+    <link rel="stylesheet" href="~/css/Recipe/details.css" />
+    <style>
+        /* Responsive cho thiết bị di động */
+        @@media (max-width: 768px) {
+            .recipe-container {
+                flex-direction: column;
+            }
+
+            .recipe-sidebar {
+                width: 100%;
+                border-right: none;
+                padding-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .recipe-content {
+                width: 100%;
+            }
+
+            .recipe-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            /* Chuyển grid view thành 1 cột */
+            .recipe-list.grid-view {
+                grid-template-columns: 1fr;
+            }
+
+            /* Tối ưu modal chi tiết công thức */
+            .recipe-details .recipe-header {
+                flex-direction: column;
+            }
+
+            .recipe-details .recipe-image {
+                width: 100%;
+                max-width: none;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .recipe-details .recipe-info {
+                width: 100%;
+            }
+
+            .recipe-meta {
+                justify-content: space-around;
+                flex-wrap: wrap;
+            }
+
+            .steps-carousel .step-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .step-item .step-image {
+                margin-right: 0;
+                margin-bottom: 15px;
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .steps-carousel {
+                align-items: stretch;
+            }
+
+            .carousel-btn {
+                position: static;
+                transform: none;
+                margin: 0 10px;
+            }
+
+            /* Tối ưu modal reviews và rate */
+            #reviewsModal .modal-content,
+            #rateModal .modal-content {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .pagination-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .pagination-controls .pagination-btn {
+                width: 100%;
+            }
+        }
+    </style>
 }
 
 <div class="recipe-page">
@@ -22,24 +117,34 @@
     <div class="recipe-container">
         <!-- Sidebar bộ lọc -->
         <aside class="recipe-sidebar">
-            <h3>Loại món ăn</h3>
-            <ul id="categoryList">
-                <li class="active" data-category="all">Tất cả</li>
-                <li data-category="Món chính">Món chính</li>
-                <li data-category="Món khai vị">Món khai vị</li>
-                <li data-category="Món tráng miệng">Món tráng miệng</li>
-                <li data-category="Nước uống">Nước uống</li>
-                <li data-category="Món ăn nhẹ">Món ăn nhẹ</li>
-                <li data-category="Khác">Khác</li>
+        <div class="filter-header">
+                <button id="clearFilters" class="clear-filters-btn">❌ Xoá lọc</button>
+            </div>
+            <h3>Loại món</h3>
+            <ul id="typeOfDishList">
+                <li class="@(string.IsNullOrEmpty(ViewBag.TypeOfDishFilter as string) ? "active" : "")" data-value="">Tất cả</li>
+                @foreach (var type in ViewBag.TypeOfDishes as List<string>)
+                {
+                    <li class="@(ViewBag.TypeOfDishFilter == type ? "active" : "")" data-value="@type">@type</li>
+                }
             </ul>
 
-            <h3>Thời gian thực hiện</h3>
+            <h3>Phương pháp nấu</h3>
+            <ul id="cookingMethodList">
+                <li class="@(string.IsNullOrEmpty(ViewBag.CookingMethodFilter as string) ? "active" : "")" data-value="">Tất cả</li>
+                @foreach (var method in ViewBag.CookingMethods as List<string>)
+                {
+                    <li class="@(ViewBag.CookingMethodFilter == method ? "active" : "")" data-value="@method">@method</li>
+                }
+            </ul>
+
+            <h3>Thời gian</h3>
             <ul id="timeList">
-                <li class="active" data-time="all">Tất cả</li>
-                <li data-time="15">Dưới 15 phút</li>
-                <li data-time="30">15-30 phút</li>
-                <li data-time="60">30-60 phút</li>
-                <li data-time="120">Trên 60 phút</li>
+                <li class="@(string.IsNullOrEmpty(ViewBag.TimeFilter as string) || ViewBag.TimeFilter == "all" ? "active" : "")" data-value="all">Tất cả</li>
+                <li class="@(ViewBag.TimeFilter == "15" ? "active" : "")" data-value="15">Dưới 15 phút</li>
+                <li class="@(ViewBag.TimeFilter == "30" ? "active" : "")" data-value="30">15-30 phút</li>
+                <li class="@(ViewBag.TimeFilter == "60" ? "active" : "")" data-value="60">30-60 phút</li>
+                <li class="@(ViewBag.TimeFilter == "120" ? "active" : "")" data-value="120">Trên 60 phút</li>
             </ul>
         </aside>
 
@@ -53,17 +158,18 @@
             <div class="recipe-list grid-view" id="recipeList">
                 @foreach (var recipe in Model)
                 {
-                <a href="@Url.Action("Details", "Recipe", new { id = recipe.RecipeId })" class="recipe-link">
+                <div class="recipe-link" data-recipe-id="@recipe.RecipeId">
                 <div class="recipe-card"
-                    data-category="Món chính"
-                    data-time="@(recipe.PrepTime + recipe.CookTime)"
-                    data-title="@recipe.Title"
-                    data-description="@recipe.Description"
-                    data-image="@recipe.ImageUrl"
-                    data-preptime="@recipe.PrepTime"
-                    data-cooktime="@recipe.CookTime"
-                    data-servings="@recipe.Servings"
-                    data-author="@recipe.User?.FullName"
+                data-typeofdish="@recipe.Type_of_dish"
+                data-cookingmethod="@recipe.Cooking_method"
+                data-time="@(recipe.PrepTime + recipe.CookTime)"
+                data-title="@recipe.Title"
+                data-description="@recipe.Description"
+                data-image="@recipe.ImageUrl"
+                data-preptime="@recipe.PrepTime"
+                data-cooktime="@recipe.CookTime"
+                data-servings="@recipe.Servings"
+                data-author="@recipe.User?.FullName"
                      data-totaltime="@(recipe.PrepTime + recipe.CookTime)">
                     <img src="@recipe.ImageUrl" alt="@recipe.Title" />
                 <div class="info">
@@ -75,27 +181,157 @@
                         <p>@recipe.Description</p>
                         </div>
                         </div>
-                    </a>
-                }
+                        </div>
+                        }
             </div>
         </section>
     </div>
 
     <!-- Modal chi tiết công thức -->
-    <div class="recipe-modal" id="recipeModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <img id="modalImage" src="" alt="" />
-            <h3 id="modalTitle"></h3>
-            <p><strong>Tác giả:</strong> <span id="modalAuthor"></span></p>
-            <div class="modal-meta">
-                <p><strong>Thời gian chuẩn bị:</strong> <span id="modalPrepTime"></span> phút</p>
-                <p><strong>Thời gian nấu:</strong> <span id="modalCookTime"></span> phút</p>
-                <p><strong>Khẩu phần:</strong> <span id="modalServings"></span> người</p>
+    <div class="recipe-modal modal" id="recipeModal">
+    <div class="recipe-details modal-recipe-details" style="width: 90vw; max-width: 1100px;">
+    <span class="close-modal">&times;</span>
+
+    <!-- Header with image and info -->
+    <div class="recipe-header">
+        <div class="recipe-image">
+        <img id="modalImage" src="" alt="" />
+    </div>
+    <div class="recipe-info">
+            <div class="recipe-meta">
+                <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                            <span id="modalPrepTime"></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-fire"></i>
+                            <span id="modalCookTime"></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span id="modalServings"></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-star"></i>
+                            <span id="modalRating"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p id="modalDescription"></p>
+
+            <!-- Recipe title -->
+            <h1 id="modalTitle" class="recipe-title"></h1>
+
+            <!-- Description -->
+            <div class="recipe-description">
+                <p id="modalDescription"></p>
+            </div>
+
+            <!-- Ingredients -->
+            <div class="recipe-ingredients" id="modalIngredients" style="display: none;">
+                <h2 id="modalIngredientsTitle">Nguyên liệu</h2>
+                <ul class="ingredients-list" id="modalIngredientsList"></ul>
+            </div>
+
+            <!-- Steps -->
+            <div class="recipe-steps" id="modalSteps" style="display: none;">
+                <h2>Các bước thực hiện</h2>
+                <div class="steps-carousel" id="modalStepsCarousel" style="display: none;">
+                    <button class="carousel-btn prev-btn" id="modalPrevStep">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <div class="steps-content" id="modalStepsContent"></div>
+
+                    <button class="carousel-btn next-btn" id="modalNextStep">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="steps-indicators" id="modalStepsIndicators" style="display: none;"></div>
+
+                <p id="modalNoSteps" style="display: none;">Không có bước thực hiện nào được cung cấp.</p>
+            </div>
+
+            <!-- Notes -->
+            <div class="recipe-notes" id="modalNotes" style="display: none;">
+                <h2>Lưu ý</h2>
+                <p id="modalNotesContent"></p>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="action-buttons modal-actions">
+            @if (User.Identity.IsAuthenticated)
+                {
+                    <button class="action-btn favorite-btn" id="modalFavoriteBtn" data-recipe-id="0">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                }
+
+                <button class="action-btn review-btn" id="modalReviewBtn" data-recipe-id="0">
+                    <i class="fas fa-comments"></i>
+                </button>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button class="action-btn rate-btn" id="modalRateBtn" data-recipe-id="0">
+                        <i class="fas fa-star"></i>
+                    </button>
+                }
+            </div>
         </div>
     </div>
+
+    <!-- Reviews Modal -->
+    <div class="modal" id="reviewsModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeReviewsModal">&times;</span>
+            <h2>Đánh giá & Bình luận</h2>
+
+            <div class="reviews-list" id="reviewsList">
+                <!-- Reviews will be loaded here -->
+            </div>
+
+            <div class="pagination-controls" id="paginationControls">
+                <button class="pagination-btn" id="prevPage" disabled>
+                    <i class="fas fa-chevron-left"></i> Trước
+                </button>
+                <span id="pageInfo">Trang 1</span>
+                <button class="pagination-btn" id="nextPage" disabled>
+                    Sau <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rate Modal -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="modal" id="rateModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeRateModal">&times;</span>
+                <h2>Đánh giá công thức</h2>
+
+                <form id="rateForm">
+                    <div class="rating-stars">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+
+                    <textarea id="reviewComment" placeholder="Viết bình luận của bạn..." rows="4"></textarea>
+
+                    <div class="modal-actions">
+                        <button type="button" class="cancel-btn" id="cancelRate">Hủy</button>
+                        <button type="submit" class="submit-btn" id="submitRateBtn">Gửi đánh giá</button>
+                        <button type="button" class="delete-btn" id="deleteRateBtn" style="display: none;">Xóa đánh giá</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
 </div>
 
 @section Scripts {

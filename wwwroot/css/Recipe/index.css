@@ -85,22 +85,48 @@
     }
 
         .recipe-sidebar li {
-            padding: 8px 12px;
-            margin-bottom: 4px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
+        padding: 8px 12px;
+        margin-bottom: 4px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.9rem;
+            color: #5a3210;
+    }
+
+        .recipe-sidebar li:hover {
+            background: #fff8f3;
+            }
+
+        .recipe-sidebar li.active {
+            background: #ffe5cc;
+        color: #d76a11;
+        font-weight: 600;
         }
 
-            .recipe-sidebar li:hover {
-                background: #fff8f3;
-            }
+    .filter-header {
+        margin-bottom: 20px;
+        text-align: center;
+    }
 
-            .recipe-sidebar li.active {
-                background: #f28c38;
-                color: #fff;
-            }
+    .clear-filters-btn {
+        padding: 8px 16px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s;
+        width: 100%;
+    }
+
+    .clear-filters-btn:hover {
+        background: #c82333;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    }
 
 /* ========== Content ========== */
 .recipe-content {
@@ -144,6 +170,17 @@
 .recipe-link:hover {
     text-decoration: none;
     color: inherit;
+    transform: translateY(-2px);
+}
+
+.recipe-link {
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    transition: transform 0.2s;
+}
+
+.recipe-link:hover {
     transform: translateY(-2px);
 }
 
@@ -239,6 +276,17 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.7);
+    align-items: center;
+    justify-content: center;
+}
+
+.recipe-modal.active {
+    display: flex;
+}
+
+.modal-recipe-details {
+    position: relative;
+    z-index: 1001;
 }
 
 .modal-content {
@@ -282,7 +330,7 @@
         margin: 12px 24px;
     }
 
-.close-modal {
+.modal .close-modal:not(.recipe-modal .close-modal) {
     position: absolute;
     top: 15px;
     right: 20px;
@@ -293,9 +341,9 @@
     z-index: 1;
 }
 
-    .close-modal:hover {
-        color: #ccc;
-    }
+.modal .close-modal:not(.recipe-modal .close-modal):hover {
+    color: #ccc;
+}
 
 /* ========== Favorites Page ========== */
 .favorites-subtitle {
@@ -363,11 +411,100 @@
         }
 
     .modal-content {
-        width: 95%;
-        margin: 10% auto;
+    width: 95%;
+    margin: 10% auto;
     }
 
     .no-favorites {
-        padding: 40px 20px;
+    padding: 40px 20px;
+    }
+}
+
+/* ========== Large Modal for Recipe Details ========== */
+.large-modal {
+    max-width: 1200px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.modal-actions p {
+    margin: 0;
+    color: #666;
+}
+
+.modal-actions .action-buttons {
+    display: flex;
+    gap: 10px;
+    position: static;
+    right: auto;
+    top: auto;
+    transform: none;
+    flex-direction: row;
+}
+
+/* ========== Modal Recipe Details ========== */
+.modal-recipe-details {
+    padding: 20px !important;
+    background: #fff8f3 !important;
+    margin: 0 !important;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.recipe-modal .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #fff;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1002;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-size: 20px;
+    color: #666;
+    border: none;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.recipe-modal .close-modal:hover {
+    background: #f8f9fa;
+    color: #333;
+    transform: scale(1.1);
+}
+
+/* Mobile responsive for modal */
+@media (max-width: 768px) {
+    .modal-recipe-details {
+        max-width: 95vw !important;
+        padding: 15px !important;
+        margin: 10px !important;
+    }
+
+    .recipe-modal .close-modal {
+        top: 5px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
     }
 }

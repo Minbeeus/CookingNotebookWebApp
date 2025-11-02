@@ -1,0 +1,60 @@
+/* Ingredient Details Modal Styles */
+
+.ingredient-details-content {
+    color: #E0E1DD;
+    max-width: 100%;
+    padding: 5px;
+}
+
+#ingredientDetailsModal .ingredient-details-content .ingredient-image {
+    /* Đảm bảo thẻ div chứa ảnh có kích thước cố định nếu cần */
+    width: 150px !important; 
+    height: 150px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto 20px auto;
+    background: #2A3441;
+    border-radius: 8px;
+    border: 1px solid #3A475C;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#ingredientDetailsModal .ingredient-details-content .ingredient-image img {
+    width: 150px !important; /* Bắt buộc phải 150px */
+    height: 150px !important; /* Bắt buộc phải 150px */
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.ingredient-details-content .ingredient-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ingredient-details-content .info-row {
+    background: #2A3441;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #3A475C;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.ingredient-details-content .info-row strong {
+    color: #68C69F;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 16px;
+}
+
+.ingredient-details-content .info-row span {
+    color: #E0E1DD;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.ingredient-details-content .info-row.description-row span {
+    font-size: 15px;
+    line-height: 1.5;
+}

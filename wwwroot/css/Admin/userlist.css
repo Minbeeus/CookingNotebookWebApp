@@ -34,13 +34,13 @@
 }
 
 .user-table th {
-    background: #68C69F;
+    background: #3A475C;
     font-weight: 600;
     color: #FFFFFF;
 }
 
 .user-table tbody tr {
-    background: #3A475C;
+    background: #2A3441;
 }
 
 .user-table tbody tr:hover {

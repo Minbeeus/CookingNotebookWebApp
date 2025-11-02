@@ -1,3 +1,5 @@
+@using CookingNotebookWebApp.Models
+
 @model CookingNotebookWebApp.Models.ViewModels.EditRecipeViewModel
 
 @{
@@ -12,7 +14,21 @@
     <h2 class="page-title">✏️ Chỉnh sửa công thức</h2>
     <p class="page-subtitle">Cập nhật thông tin công thức</p>
 
-    <form asp-action="EditRecipe" method="post" class="edit-form">
+    <div id='ingredientOptionsTemplate' style='display: none;'>
+        <option value=''>-- Chọn nguyên liệu --</option>
+        @foreach (var ing in ViewBag.Ingredients ?? new List<Ingredient>())
+        {
+            <option value='@ing.IngredientId'>@ing.Name</option>
+        }
+    </div>
+    <datalist id='ingredientList'>
+        @foreach (var ing in ViewBag.Ingredients ?? new List<Ingredient>())
+        {
+            <option value='@ing.Name'></option>
+        }
+    </datalist>
+
+    <form asp-action="EditRecipe" method="post" enctype="multipart/form-data" class="edit-form">
         <input type="hidden" asp-for="Recipe.RecipeId" />
         <input type="hidden" asp-for="Recipe.UserId" />
         <input type="hidden" asp-for="Recipe.CreatedAt" />
@@ -49,8 +65,16 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="Recipe.ImageUrl">URL hình ảnh:</label>
-            <input asp-for="Recipe.ImageUrl" type="url" class="form-control" />
+        <label for="imageFile">Hình ảnh:</label>
+        <input type="file" name="imageFile" id="imageFile" class="form-control" accept="image/*" />
+            <small class="text-muted">Chọn hình ảnh mới để thay thế</small>
+            @if (!string.IsNullOrEmpty(Model.Recipe.ImageUrl))
+            {
+                <div class="current-image">
+                    <small class="text-muted">Hình ảnh hiện tại:</small><br>
+                    <img src="@Model.Recipe.ImageUrl" alt="Current image" style="max-width: 200px; max-height: 200px;" />
+                </div>
+            }
         </div>
 
         <div class="form-group">
@@ -60,46 +84,82 @@
 
         <h3>Nguyên liệu</h3>
         <div class="ingredients-section">
-            @if (Model.Ingredients.Any())
-            {
-                <ul class="ingredients-list">
-                    @foreach (var ingredient in Model.Ingredients)
-                    {
-                        <li>@ingredient.Quantity @ingredient.Unit @ingredient.Ingredient.Name @(string.IsNullOrEmpty(ingredient.Notes) ? "" : $"({ingredient.Notes})")</li>
-                    }
-                </ul>
-            }
-            else
-            {
-                <p>Không có nguyên liệu nào.</p>
-            }
+        <div id='ingredientsContainer'>
+        @for (int i = 0; i < Math.Max(Model.Ingredients.Count, 1); i++)
+        {
+            var ingredient = i < Model.Ingredients.Count ? Model.Ingredients[i] : null;
+        <div class='ingredient-item' style='margin-bottom: 20px; padding: 15px; background: #1B263B; border-radius: 8px; border: 1px solid #3A475C; width: 100%; display: flex; flex-direction: row; align-items: center; gap: 10px; flex-wrap: wrap;'>
+        <div style='display: flex; align-items: center; gap: 5px; min-width: 100px;'>
+            <i class='fas fa-grip-vertical ingredient-drag-handle' style='color: #68C69F; cursor: grab;'></i>
+        <h6 style='color: #68C69F; margin: 0;'>Nguyên liệu @(i + 1)</h6>
+        </div>
+        <div class='form-group' style='display: flex; align-items: center; gap: 5px;'>
+        <label style='color: #E0E1DD; font-weight: 500;'>Nguyên liệu:</label>
+        <input type='text' name='Ingredients[@i].IngredientName' value='@(ingredient?.Ingredient.Name ?? "")' list='ingredientList' class='form-control' required style='background: #2A3441; color: #E0E1DD; border: 1px solid #3A475C; width: 120px;' />
+        <input type='hidden' name='Ingredients[@i].RecipeId' value='@Model.Recipe.RecipeId' />
+        </div>
+        <div class='form-group' style='display: flex; align-items: center; gap: 5px;'>
+        <label style='color: #E0E1DD; font-weight: 500;'>Số lượng:</label>
+        <input name='Ingredients[@i].Quantity' type='number' step='0.01' class='form-control' value='@ingredient?.Quantity' required style='background: #2A3441; color: #E0E1DD; border: 1px solid #3A475C; width: 120px;' />
+        </div>
+        <div class='form-group' style='display: flex; align-items: center; gap: 5px;'>
+        <label style='color: #E0E1DD; font-weight: 500;'>Đơn vị:</label>
+        <select name='Ingredients[@i].Unit' class='form-control' style='background: #2A3441; color: #E0E1DD; border: 1px solid #3A475C; width: 100px;'>
+        <option value=''>-- Chọn --</option>
+        <option value='g' @(ingredient?.Unit == "g" ? "selected" : "")>g</option>
+        <option value='thìa cà phê' @(ingredient?.Unit == "thìa cà phê" ? "selected" : "")>thìa cà phê</option>
+        <option value='thìa canh' @(ingredient?.Unit == "thìa canh" ? "selected" : "")>thìa canh</option>
+        <option value='tép' @(ingredient?.Unit == "tép" ? "selected" : "")>tép</option>
+        <option value='quả' @(ingredient?.Unit == "quả" ? "selected" : "")>quả</option>
+        <option value='củ' @(ingredient?.Unit == "củ" ? "selected" : "")>củ</option>
+        <option value='kg' @(ingredient?.Unit == "kg" ? "selected" : "")>kg</option>
+        </select>
+        </div>
+        <div class='form-group' style='display: flex; align-items: center; gap: 5px;'>
+        <label style='color: #E0E1DD; font-weight: 500;'>Ghi chú:</label>
+        <input name='Ingredients[@i].Notes' class='form-control' value='@ingredient?.Notes' style='background: #2A3441; color: #E0E1DD; border: 1px solid #3A475C; width: 200px;' />
+        </div>
+        <button type='button' class='btn btn-danger btn-sm' onclick='removeIngredient(this)' style='background: #D9534F; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-left: auto;'>Xóa</button>
+        </div>
+        }
+        </div>
+            <button type='button' id='addIngredientBtn' class='btn' style='background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; margin-top: 10px;'>Thêm nguyên liệu</button>
         </div>
 
         <h3>Các bước thực hiện</h3>
         <div class="steps-section">
-            @if (Model.Steps.Any())
-            {
-                <ol class="steps-list">
-                    @foreach (var step in Model.Steps.OrderBy(s => s.StepNumber))
-                    {
-                        <li>
-                            <p>@step.Description</p>
-                            @if (!string.IsNullOrEmpty(step.ImageUrl))
+            <div id='stepsContainer'>
+            @for (int i = 0; i < Math.Max(Model.Steps.Count, 1); i++)
+                {
+                    var step = i < Model.Steps.Count ? Model.Steps[i] : null;
+                <div class='step-item' style='margin-bottom: 20px; padding: 15px; background: #1B263B; border-radius: 8px; border: 1px solid #3A475C; width: 100%; display: flex; flex-direction: row; align-items: center; gap: 10px; flex-wrap: wrap;'>
+                <div style='display: flex; align-items: center; gap: 5px; min-width: 100px;'>
+                <i class='fas fa-grip-vertical drag-handle' style='color: #68C69F; cursor: grab;'></i>
+                <h6 style='color: #68C69F; margin: 0;'>Bước @(i + 1)</h6>
+                    </div>
+                <div class='form-group' style='display: flex; align-items: center; gap: 5px;'>
+                <label style='color: #E0E1DD; font-weight: 500;'>Mô tả:</label>
+                <textarea name='Steps[@i].Description' class='form-control' rows='3' required style='background: #2A3441; color: #E0E1DD; border: 1px solid #3A475C; min-height: 80px; width: 500px;'>@step?.Description</textarea>
+                    <input type='hidden' name='Steps[@i].RecipeStepId' value='@step?.RecipeStepId' />
+                <input type='hidden' name='Steps[@i].StepNumber' value='@step?.StepNumber' />
+                    </div>
+                        <div class='form-group' style='display: flex; align-items: center; gap: 5px;'>
+                        <label style='color: #E0E1DD; font-weight: 500;'>Timer phút:</label>
+                            <input name='Steps[@i].TimerInMinutes' type='number' class='form-control' value='@step?.TimerInMinutes' style='background: #2A3441; color: #E0E1DD; border: 1px solid #3A475C; width: 100px;' />
+                        </div>
+                        <div class='form-group' style='display: flex; align-items: center; gap: 5px;'>
+                            <label style='color: #E0E1DD; font-weight: 500;'>Hình ảnh bước:</label>
+                            <input type='file' name='stepImages[@i]' accept='image/*' style='background: #2A3441; color: #E0E1DD; border: 1px solid #3A475C; padding: 8px; border-radius: 4px; width: 200px;' />
+                            @if (!string.IsNullOrEmpty(step?.ImageUrl))
                             {
-                                <img src="@step.ImageUrl" alt="Step image" style="max-width: 200px;" />
+                                <div class='current-image' style='margin-bottom: 15px;'><small style='color: #E0E1DD;'>Hình ảnh bước hiện tại:</small><br><div style='display: flex; align-items: center; gap: 10px;'><img src='@step.ImageUrl' alt='Current Step' style='width: 100px; height: 100px; object-fit: cover; border-radius: 4px; border: 1px solid #3A475C;'><button type='button' onclick='deleteCurrentStepImage(@step.RecipeStepId, "@step.ImageUrl")' class='btn btn-danger btn-sm' style='background: #D9534F; color: white; border: none; padding: 4px 8px; border-radius: 4px;'>Xóa</button></div></div>
                             }
-                            @if (step.TimerInMinutes.HasValue)
-                            {
-                                <p><strong>Thời gian:</strong> @step.TimerInMinutes phút</p>
-                            }
-                        </li>
-                    }
-                </ol>
+                        </div>
+                        <button type='button' class='btn btn-danger btn-sm' onclick='removeStep(this)' style='background: #D9534F; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-left: auto;'>Xóa</button>
+                    </div>
             }
-            else
-            {
-                <p>Không có bước nào.</p>
-            }
+        </div>
+            <button type='button' id='addStepBtn' class='btn' style='background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; margin-top: 10px;'>Thêm bước</button>
         </div>
 
         <div class="form-actions">
@@ -110,5 +170,6 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Admin/recipelist.js"></script>
 }

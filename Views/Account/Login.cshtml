@@ -1,4 +1,4 @@
-﻿@{
+@{
     Layout = "~/Pages/Shared/_Layout.cshtml";
     ViewData["Title"] = "Đăng nhập - Cooking Notebook";
 }
@@ -11,6 +11,8 @@
             <h1>🍳 Cooking Notebook</h1>
             <p>Chào mừng trở lại! Vui lòng đăng nhập để tiếp tục.</p>
         </div>
+
+        @Html.ValidationSummary(false, "", new { @class = "alert alert-danger", @style = "margin-bottom: 20px;" })
 
         <form id="loginForm" method="post" asp-action="Login" asp-controller="Account">
             @Html.AntiForgeryToken()
@@ -35,7 +37,7 @@
             <button type="submit" class="btn-login">Đăng nhập</button>
 
             <div class="login-links">
-                <a asp-action="Register" asp-controller="Account">Đăng ký ngay</a>
+            <a href="/Account/Register">Đăng ký ngay</a>
             </div>
         </form>
     </div>

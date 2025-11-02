@@ -16,10 +16,11 @@
 }
 
 .edit-form {
-    background: #2A3441;
+    background: #1B263B;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    color: #E0E1DD;
 }
 
 .form-group {
@@ -36,14 +37,17 @@
 .form-control {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #3A475C;
     border-radius: 4px;
     font-size: 14px;
+    background: #2A3441;
+    color: #E0E1DD;
 }
 
 .form-control:focus {
-    border-color: #007bff;
+    border-color: #68C69F;
     outline: none;
+    box-shadow: 0 0 0 2px rgba(104, 198, 159, 0.2);
 }
 
 .form-row {

@@ -13,7 +13,7 @@
 }
 
 .dashboard-subtitle {
-    color: #B0B3B8;
+    color: #E0E1DD;
     font-size: 1rem;
     margin-bottom: 25px;
 }
@@ -52,39 +52,19 @@
 }
 
 .bg-orange {
-    background: #68C69F;
-}
-
-.bg-orange::before {
-    content: "\f0c0"; /* fa-users */
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 1.6rem;
-    color: #FFFFFF;
+background: #68C69F;
 }
 
 .bg-green {
-    background: #A9A9A9;
-}
-
-.bg-green::before {
-    content: "\f543"; /* fa-utensils */
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 1.6rem;
-    color: #FFFFFF;
+background: #A9A9A9;
 }
 
 .bg-purple {
-    background: #D9534F;
+background: #D9534F;
 }
 
-.bg-purple::before {
-    content: "\f086"; /* fa-comments */
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 1.6rem;
-    color: #FFFFFF;
+.bg-blue {
+background: #007BFF;
 }
 
 .stat-info h4 {

@@ -1,11 +1,12 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
-    const categoryItems = document.querySelectorAll("#categoryList li");
-    const gridViewBtn = document.getElementById("gridView");
-    const listViewBtn = document.getElementById("listView");
-    const ingredientList = document.querySelector(".ingredient-list");
-    const modal = document.getElementById("ingredientModal");
-    const closeModal = document.querySelector(".close-modal");
-    const searchInput = document.getElementById("searchInput");
+document.addEventListener("DOMContentLoaded", () => {
+const categoryItems = document.querySelectorAll("#categoryList li");
+const gridViewBtn = document.getElementById("gridView");
+const listViewBtn = document.getElementById("listView");
+const ingredientList = document.querySelector(".ingredient-list");
+const modal = document.getElementById("ingredientModal");
+const closeModal = document.querySelector(".close-modal");
+const searchInput = document.getElementById("searchInput");
+    const clearFiltersBtn = document.getElementById("clearFilters");
 
     let cards = document.querySelectorAll(".ingredient-card");
 
@@ -74,12 +75,30 @@
 
     // ====== Tìm kiếm không dấu ======
     searchInput.addEventListener("input", () => {
-        const keyword = removeAccents(searchInput.value.toLowerCase().trim());
+    const keyword = removeAccents(searchInput.value.toLowerCase().trim());
+    cards.forEach(card => {
+    const nameRaw = (card.dataset.namevi || "").toLowerCase();
+    const nameNoAccent = removeAccents(nameRaw);
+    const match = nameNoAccent.includes(keyword);
+    card.style.display = match ? "flex" : "none";
+    });
+    });
+
+    // ====== Xoá lọc ======
+    clearFiltersBtn.addEventListener("click", () => {
+        // Reset category filter
+        categoryItems.forEach(item => item.classList.remove("active"));
+        const allItem = document.querySelector("#categoryList li[data-category='all']");
+        if (allItem) {
+            allItem.classList.add("active");
+        }
+
+        // Reset search input
+        searchInput.value = "";
+
+        // Show all cards
         cards.forEach(card => {
-            const nameRaw = (card.dataset.namevi || "").toLowerCase();
-            const nameNoAccent = removeAccents(nameRaw);
-            const match = nameNoAccent.includes(keyword);
-            card.style.display = match ? "flex" : "none";
+            card.style.display = "flex";
         });
     });
 });

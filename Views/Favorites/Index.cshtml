@@ -13,12 +13,48 @@
     <!-- Header -->
     <div class="recipe-header">
         <h2>❤️ Công thức yêu thích</h2>
-        <p class="favorites-subtitle">Các công thức bạn đã lưu vào danh sách yêu thích</p>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Tìm công thức yêu thích..." />
+            <button id="searchBtn">🔍</button>
+        </div>
     </div>
 
     <div class="recipe-container">
-        <!-- No sidebar for favorites page -->
-        <section class="recipe-content" style="width: 100%;">
+        <!-- Sidebar bộ lọc -->
+        <aside class="recipe-sidebar">
+        <div class="filter-header">
+                <button id="clearFilters" class="clear-filters-btn">❌ Xoá lọc</button>
+            </div>
+            <h3>Loại món</h3>
+            <ul id="typeOfDishList">
+                <li class="@(string.IsNullOrEmpty(ViewBag.TypeOfDishFilter as string) ? "active" : "")" data-value="">Tất cả</li>
+                @foreach (var type in ViewBag.TypeOfDishes as List<string>)
+                {
+                    <li class="@(ViewBag.TypeOfDishFilter == type ? "active" : "")" data-value="@type">@type</li>
+                }
+            </ul>
+
+            <h3>Phương pháp nấu</h3>
+            <ul id="cookingMethodList">
+                <li class="@(string.IsNullOrEmpty(ViewBag.CookingMethodFilter as string) ? "active" : "")" data-value="">Tất cả</li>
+                @foreach (var method in ViewBag.CookingMethods as List<string>)
+                {
+                    <li class="@(ViewBag.CookingMethodFilter == method ? "active" : "")" data-value="@method">@method</li>
+                }
+            </ul>
+
+            <h3>Thời gian</h3>
+            <ul id="timeList">
+                <li class="@(string.IsNullOrEmpty(ViewBag.TimeFilter as string) || ViewBag.TimeFilter == "all" ? "active" : "")" data-value="all">Tất cả</li>
+                <li class="@(ViewBag.TimeFilter == "15" ? "active" : "")" data-value="15">Dưới 15 phút</li>
+                <li class="@(ViewBag.TimeFilter == "30" ? "active" : "")" data-value="30">15-30 phút</li>
+                <li class="@(ViewBag.TimeFilter == "60" ? "active" : "")" data-value="60">30-60 phút</li>
+                <li class="@(ViewBag.TimeFilter == "120" ? "active" : "")" data-value="120">Trên 60 phút</li>
+            </ul>
+        </aside>
+
+        <!-- Danh sách công thức -->
+        <section class="recipe-content">
             <div class="view-toggle">
                 <button id="gridView" class="active">🔲 Dạng lưới</button>
                 <button id="listView">📋 Dạng danh sách</button>
@@ -30,16 +66,17 @@
                     @foreach (var recipe in Model)
                     {
                         <a href="@Url.Action("Details", "Recipe", new { id = recipe.RecipeId })" class="recipe-link">
-                            <div class="recipe-card"
-                                 data-category="Món chính"
-                                 data-time="@(recipe.PrepTime + recipe.CookTime)"
-                                 data-title="@recipe.Title"
-                                 data-description="@recipe.Description"
-                                 data-image="@recipe.ImageUrl"
-                                 data-preptime="@recipe.PrepTime"
-                                 data-cooktime="@recipe.CookTime"
-                                 data-servings="@recipe.Servings"
-                                 data-author="@recipe.User?.FullName"
+                        <div class="recipe-card"
+                        data-typeofdish="@recipe.Type_of_dish"
+                        data-cookingmethod="@recipe.Cooking_method"
+                        data-time="@(recipe.PrepTime + recipe.CookTime)"
+                        data-title="@recipe.Title"
+                        data-description="@recipe.Description"
+                        data-image="@recipe.ImageUrl"
+                        data-preptime="@recipe.PrepTime"
+                        data-cooktime="@recipe.CookTime"
+                        data-servings="@recipe.Servings"
+                        data-author="@recipe.User?.FullName"
                                  data-totaltime="@(recipe.PrepTime + recipe.CookTime)">
                                 <img src="@recipe.ImageUrl" alt="@recipe.Title" />
                                 <div class="info">
@@ -71,5 +108,5 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/Recipe/index.js"></script>
+    <script src="~/js/Favorites/index.js"></script>
 }

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CookingNotebookWebApp.Models
@@ -11,7 +11,7 @@ namespace CookingNotebookWebApp.Models
         [Required]
         [MaxLength(100)]
         [Display(Name = "Tên tiếng Việt")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [MaxLength(100)]
         [Display(Name = "Tên tiếng Anh")]

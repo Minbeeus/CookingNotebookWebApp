@@ -7,24 +7,30 @@
 }
 
 <link rel="stylesheet" href="~/css/Admin/ingredientlist.css" />
+<link rel="stylesheet" href="~/css/Admin/ingredientdetails.css" />
 
 <div class="ingredient-list">
     <h2 class="page-title">Quản lý nguyên liệu</h2>
-    <p class="page-subtitle">Danh sách tất cả nguyên liệu trong hệ thống</p>
 
     <div class="actions-bar">
-        <div class="search-section">
-            <form method="get" class="search-form" style="display: flex; gap: 8px; align-items: center;">
-                <input type="text" name="searchTerm" placeholder="Tìm kiếm nguyên liệu..." class="form-control" style="width: 250px;" value="@Context.Request.Query["searchTerm"]" />
-                <button type="submit" class="btn" style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px;">Tìm kiếm</button>
-                @if (!string.IsNullOrEmpty(Context.Request.Query["searchTerm"]))
-                {
-                    <a href="@Url.Action("IngredientList", "Admin")" class="btn" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; text-decoration: none;">Xóa tìm kiếm</a>
-                }
-            </form>
-        </div>
+    <div class="search-section" style="display: flex; gap: 20px; align-items: center;">
+    <div style="display: flex; gap: 8px; align-items: center;">
+    <input type="text" id="searchInput" placeholder="Tìm kiếm nguyên liệu..." class="form-control" style="width: 300px;" />
+    </div>
+    <div style="display: flex; gap: 15px; align-items: center;">
+    <label for="typeFilter" style="color: #E0E1DD; font-weight: 500; white-space: nowrap;">Phân loại:</label>
+    <select id="typeFilter" class="form-control" style="width: 150px;">
+    <option value="">Tất cả</option>
+    @foreach (var type in ViewBag.Types as List<string>)
+    {
+    <option value="@type" @(ViewBag.TypeFilter == type ? "selected" : "")>@type</option>
+    }
+    </select>
+    <button type="button" id="clearAllBtn" class="clear-search-btn" title="Xoá tất cả bộ lọc" style="font-size: 14px; color: #E0E1DD; padding: 4px 12px; border: 1px solid #3A475C; background: #2A3441; border-radius: 4px; width: 90px;">Xoá lọc</button>
+    </div>
+    </div>
         <div class="action-section">
-            <a href="@Url.Action("CreateIngredient", "Admin")" class="btn" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; text-decoration: none;">Thêm nguyên liệu</a>
+        <button type="button" onclick="createIngredient()" class="btn" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-size: 16px; font-weight: 600;"><i class="fa-solid fa-plus" style="margin-right: 8px;"></i>Thêm nguyên liệu</button>
         </div>
     </div>
 
@@ -33,7 +39,9 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Tên nguyên liệu</th>
+                    <th>Tên tiếng Việt</th>
+                    <th>Tên tiếng Anh</th>
+                    <th>Loại</th>
                     <th>Mô tả</th>
                     <th>Hình ảnh</th>
                     <th>Hành động</th>
@@ -43,8 +51,10 @@
                 @foreach (var ingredient in Model)
                 {
                     <tr>
-                        <td>@ingredient.IngredientId</td>
-                        <td>@ingredient.Name</td>
+                    <td>@ingredient.IngredientId</td>
+                    <td>@ingredient.Name</td>
+                    <td>@ingredient.EnName</td>
+                    <td>@ingredient.Type</td>
                         <td>@(ingredient.Description?.Length > 50 ? ingredient.Description.Substring(0, 50) + "..." : ingredient.Description)</td>
                         <td>
                             @if (!string.IsNullOrEmpty(ingredient.ImagePath))
@@ -57,9 +67,9 @@
                             }
                         </td>
                         <td class="action-buttons">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="viewIngredientDetails(@ingredient.IngredientId)" style="background: #17a2b8; border-color: #17a2b8;">Xem</button>
-                        <a href="@Url.Action("EditIngredient", "Admin", new { id = ingredient.IngredientId })" class="btn btn-warning btn-sm" style="background: #ffc107; border-color: #ffc107; color: #212529;">Sửa</a>
-                        <a href="@Url.Action("DeleteIngredient", "Admin", new { id = ingredient.IngredientId })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa nguyên liệu này?')">Xóa</a>
+                        <button type="button" class="action-btn view-btn" onclick="viewIngredientDetails(@ingredient.IngredientId)">Xem</button>
+                        <button type="button" class="action-btn edit-btn" onclick="editIngredient(@ingredient.IngredientId)">Sửa</button>
+                        <button type="button" class="action-btn delete-btn" onclick="confirmDeleteIngredient(@ingredient.IngredientId, '@ingredient.Name')">Xóa</button>
                         </td>
                     </tr>
                 }
@@ -67,21 +77,60 @@
         </table>
     </div>
 
+    <!-- Pagination -->
+    @if (Convert.ToInt32(ViewBag.TotalPages) > 1)
+    {
+    <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px; padding: 20px;">
+    @if (Convert.ToInt32(ViewBag.CurrentPage) > 1)
+    {
+    <a href="@Url.Action("IngredientList", "Admin", new { page = Convert.ToInt32(ViewBag.CurrentPage) - 1, searchTerm = ViewBag.SearchTerm, typeFilter = ViewBag.TypeFilter })" class="btn" style="background: #A9A9A9; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600;">&laquo; Trước</a>
+    }
+
+    <span style="color: #E0E1DD; font-weight: 600;">Trang @Convert.ToInt32(ViewBag.CurrentPage) / @Convert.ToInt32(ViewBag.TotalPages)</span>
+
+    @if (Convert.ToInt32(ViewBag.CurrentPage) < Convert.ToInt32(ViewBag.TotalPages))
+    {
+    <a href="@Url.Action("IngredientList", "Admin", new { page = Convert.ToInt32(ViewBag.CurrentPage) + 1, searchTerm = ViewBag.SearchTerm, typeFilter = ViewBag.TypeFilter })" class="btn" style="background: #A9A9A9; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600;">Sau &raquo;</a>
+    }
+    </div>
+    }
+
+    
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteIngredientModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="background: #1B263B; border: 2px solid #3A475C; border-radius: 12px; color: #E0E1DD;">
+    <div class="modal-header" style="background: #2A3441; border-bottom: 1px solid #3A475C; border-radius: 12px 12px 0 0;">
+    <h5 class="modal-title" id="deleteModalLabel" style="color: #FFFFFF; font-weight: 600;">Xác nhận xóa nguyên liệu</h5>
+    </div>
+    <div class="modal-body" style="background: #1B263B; padding: 25px; text-align: center;">
+    <p style="font-size: 16px; margin-bottom: 15px;">Bạn có chắc chắn muốn xóa nguyên liệu "<span id="deleteIngredientName" style="color: #68C69F; font-weight: 600;"></span>"?</p>
+        <p style="color: #FF6B6B; font-weight: 600; margin-bottom: 0;">Hành động này không thể hoàn tác!</p>
+    </div>
+    <div class="modal-footer" style="background: #2A3441; border-top: 1px solid #3A475C; border-radius: 0 0 12px 12px; justify-content: center; gap: 15px;">
+    <button type="button" class="btn" onclick="$('#deleteIngredientModal').modal('hide');" style="background: #A9A9A9; color: white; padding: 10px 20px; border-radius: 6px; border: none; font-weight: 600; font-size: 14px;">Hủy</button>
+    <button type="button" class="btn" onclick="confirmDelete()" style="background: #D9534F; color: white; padding: 10px 20px; border-radius: 6px; border: none; font-weight: 600; font-size: 14px;">Xóa</button>
+    </div>
+    </div>
+    </div>
+    </div>
+
     <!-- Ingredient Details Modal -->
     <div class="modal fade" id="ingredientDetailsModal" tabindex="-1" role="dialog" aria-labelledby="ingredientDetailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ingredientDetailsModalLabel">Chi tiết nguyên liệu</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content" style="background: #1B263B; border: 2px solid #3A475C; border-radius: 12px;">
+                <div class="modal-header" style="background: #2A3441; border-bottom: 1px solid #3A475C; border-radius: 12px 12px 0 0;">
+                    <h5 class="modal-title" id="ingredientDetailsModalLabel" style="color: #FFFFFF; font-weight: 600;">Chi tiết nguyên liệu</h5>
                 </div>
-                <div class="modal-body" id="ingredientDetailsContent">
+                <div class="modal-body" id="ingredientDetailsContent" style="background: #1B263B; padding: 25px;">
                     <!-- Content will be loaded here -->
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <div class="modal-footer" style="background: #2A3441; border-top: 1px solid #3A475C; border-radius: 0 0 12px 12px; justify-content: space-between;">
+                    <a href="#" id="editIngredientBtn" class="btn btn-warning" style="background: #ffc107; color: #212529; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; border: none;">
+                        <i class="fa-solid fa-pen-to-square" style="margin-right: 5px;"></i>Sửa
+                    </a>
+                    <button type="button" class="btn btn-secondary" onclick="$('#ingredientDetailsModal').modal('hide');" style="background: #A9A9A9; color: white; padding: 10px 20px; border-radius: 6px; border: none; font-weight: 600; font-size: 14px;">Đóng</button>
                 </div>
             </div>
         </div>
@@ -89,21 +138,6 @@
 </div>
 
 @section Scripts {
-    <script>
-        function viewIngredientDetails(ingredientId) {
-            $.ajax({
-                url: '@Url.Action("GetIngredientDetails", "Admin")',
-                type: 'GET',
-                data: { id: ingredientId },
-                success: function(data) {
-                    $('#ingredientDetailsContent').html(data);
-                    $('#ingredientDetailsModal').modal('show');
-                },
-                error: function() {
-                    alert('Không thể tải thông tin nguyên liệu.');
-                }
-            });
-        }
-    </script>
+<script src="~/js/Admin/ingredientlist.js" asp-append-version="true"></script>
 }
 

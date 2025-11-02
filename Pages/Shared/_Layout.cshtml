@@ -41,6 +41,10 @@
                             <i class="fas fa-user-circle"></i>
                         </button>
                         <div class="dropdown-menu" id="userDropdown">
+                        @if (User.IsInRole("Admin"))
+                        {
+                        <a href="/Admin/Dashboard"><i class="fas fa-cog"></i> Trang quản trị</a>
+                        }
                             <a href="/User/Profile"><i class="fas fa-user"></i> Trang cá nhân</a>
                             <a href="/User/ChangePassword"><i class="fas fa-key"></i> Đổi mật khẩu</a>
                             <a href="/Account/Logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>

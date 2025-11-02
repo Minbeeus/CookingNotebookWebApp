@@ -93,10 +93,34 @@
 
         .ingredient-sidebar li:hover,
         .ingredient-sidebar li.active {
-            background: #ffe5cc;
-            color: #d76a11;
-            font-weight: 600;
+        background: #ffe5cc;
+        color: #d76a11;
+        font-weight: 600;
         }
+
+    .filter-header {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .clear-filters-btn {
+        padding: 8px 16px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s;
+        width: 100%;
+    }
+
+    .clear-filters-btn:hover {
+        background: #c82333;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    }
 
 /* ========== Ingredient list ========== */
 .ingredient-content {

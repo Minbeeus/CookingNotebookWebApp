@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
@@ -32,16 +32,22 @@ namespace CookingNotebookWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
+        if (!ModelState.IsValid)
+        return View(model);
 
-            // 🔍 Tìm người dùng đang hoạt động
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == model.Email && u.Status == true);
+        // 🔍 Tìm người dùng
+        var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Email == model.Email);
 
-            if (user == null)
+        if (user == null)
+        {
+        ModelState.AddModelError("", "Tài khoản không tồn tại.");
+        return View(model);
+        }
+
+            if (!user.Status)
             {
-                ModelState.AddModelError("", "Tài khoản không tồn tại hoặc đã bị khóa.");
+                ModelState.AddModelError("", "Tài khoản của bạn đang bị khóa.");
                 return View(model);
             }
 

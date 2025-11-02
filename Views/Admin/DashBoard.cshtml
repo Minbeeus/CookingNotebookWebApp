@@ -1,56 +1,35 @@
-@model CookingNotebookWebApp.Models.ViewModels.DashboardViewModel
-
 @{
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
-    ViewData["Title"] = "Trang tổng quan";
+    ViewData["Title"] = "Dashboard";
     ViewData["ActiveMenu"] = "Dashboard";
 }
 
-<link rel="stylesheet" href="~/css/Admin/dashboard.css" />
-
 <div class="dashboard">
-    <h2 class="dashboard-title">📊 Bảng điều khiển</h2>
-    <p class="dashboard-subtitle">Tổng quan hoạt động của hệ thống</p>
+    <h2>Dashboard Quản trị</h2>
 
-    <div class="dashboard-stats">
-        <div class="stat-card">
-            <div class="stat-icon bg-orange">
-                <i class="fas fa-carrot"></i>
-            </div>
-            <div class="stat-info">
-                <h4>Nguyên liệu</h4>
-                <p>@Model.IngredientCount loại</p>
-            </div>
+    <!-- Các thẻ thống kê -->
+    <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+        <div class="stat-card" style="background: #1B263B; padding: 20px; border-radius: 8px; border: 1px solid #3A475C; text-align: center;">
+            <i class="fas fa-utensils" style="font-size: 2em; color: #68C69F; margin-bottom: 10px;"></i>
+            <h3 style="color: #E0E1DD; margin: 0;">Công thức</h3>
+            <p style="color: #A9A9A9; font-size: 1.5em; margin: 5px 0 0;">@Model.RecipeCount</p>
         </div>
-
-        <div class="stat-card">
-            <div class="stat-icon bg-green">
-                <i class="fas fa-utensils"></i>
-            </div>
-            <div class="stat-info">
-                <h4>Món ăn</h4>
-                <p>@Model.RecipeCount công thức</p>
-            </div>
+        <div class="stat-card" style="background: #1B263B; padding: 20px; border-radius: 8px; border: 1px solid #3A475C; text-align: center;">
+            <i class="fas fa-carrot" style="font-size: 2em; color: #68C69F; margin-bottom: 10px;"></i>
+            <h3 style="color: #E0E1DD; margin: 0;">Nguyên liệu</h3>
+            <p style="color: #A9A9A9; font-size: 1.5em; margin: 5px 0 0;">@Model.IngredientCount</p>
         </div>
-
-        <div class="stat-card">
-            <div class="stat-icon bg-purple">
-                <i class="fas fa-users"></i>
-            </div>
-            <div class="stat-info">
-                <h4>Người dùng</h4>
-                <p>@Model.UserCount thành viên</p>
-            </div>
+        <div class="stat-card" style="background: #1B263B; padding: 20px; border-radius: 8px; border: 1px solid #3A475C; text-align: center;">
+            <i class="fas fa-users" style="font-size: 2em; color: #68C69F; margin-bottom: 10px;"></i>
+            <h3 style="color: #E0E1DD; margin: 0;">Người dùng</h3>
+            <p style="color: #A9A9A9; font-size: 1.5em; margin: 5px 0 0;">@Model.UserCount</p>
         </div>
-
-        <div class="stat-card">
-            <div class="stat-icon bg-blue">
-                <i class="fas fa-star"></i>
-            </div>
-            <div class="stat-info">
-                <h4>Đánh giá</h4>
-                <p>@Model.ReviewCount đánh giá</p>
-            </div>
+        <div class="stat-card" style="background: #1B263B; padding: 20px; border-radius: 8px; border: 1px solid #3A475C; text-align: center;">
+            <i class="fas fa-star" style="font-size: 2em; color: #68C69F; margin-bottom: 10px;"></i>
+            <h3 style="color: #E0E1DD; margin: 0;">Đánh giá</h3>
+            <p style="color: #A9A9A9; font-size: 1.5em; margin: 5px 0 0;">@Model.ReviewCount</p>
         </div>
     </div>
+
+    <p style="color: #A9A9A9; margin-top: 30px;">Chào mừng đến trang quản trị Cooking Notebook!</p>
 </div>

@@ -96,6 +96,9 @@ namespace CookingNotebookWebApp.Migrations
                     b.Property<int>("CookTime")
                         .HasColumnType("int");
 
+                    b.Property<string>("Cooking_method")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -104,6 +107,9 @@ namespace CookingNotebookWebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PrepTime")
@@ -116,6 +122,9 @@ namespace CookingNotebookWebApp.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Type_of_dish")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -132,8 +141,11 @@ namespace CookingNotebookWebApp.Migrations
 
             modelBuilder.Entity("CookingNotebookWebApp.Models.RecipeIngredient", b =>
                 {
-                    b.Property<int>("RecipeId")
+                    b.Property<int>("RecipeIngredientId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeIngredientId"));
 
                     b.Property<int>("IngredientId")
                         .HasColumnType("int");
@@ -141,17 +153,23 @@ namespace CookingNotebookWebApp.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
 
-                    b.HasKey("RecipeId", "IngredientId");
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RecipeIngredientId");
 
                     b.HasIndex("IngredientId");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("RecipeIngredients");
                 });

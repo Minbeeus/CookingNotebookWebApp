@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace CookingNotebookWebApp.Models.ViewModels
 {
@@ -6,11 +6,11 @@ namespace CookingNotebookWebApp.Models.ViewModels
     {
         [Required(ErrorMessage = "Vui lòng nhập email.")]
         [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ.")]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
 
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu.")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string Password { get; set; } = default!;
 
         [Display(Name = "Ghi nhớ đăng nhập")]
         public bool RememberMe { get; set; } = false;

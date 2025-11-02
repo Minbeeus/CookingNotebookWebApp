@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("loginForm");
     const email = document.getElementById("Email");
     const password = document.getElementById("Password");
@@ -47,17 +47,52 @@
     }
 
     if (form) {
-        form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", function (e) {
+    e.preventDefault(); // Prevent default submit
             clearErrors();
 
-            const isEmailValid = validateEmail(email.value);
+    const isEmailValid = validateEmail(email.value);
             const isPasswordValid = validatePassword(password.value);
 
-            if (!isEmailValid || !isPasswordValid) {
-                console.log("Validation failed but allowing server-side validation");
-            } else {
-                console.log("Validation passed - submitting form");
-            }
+    if (!isEmailValid || !isPasswordValid) {
+        return; // Don't submit if client validation fails
+    }
+
+        // AJAX submit
+            const formData = new FormData(form);
+            fetch('/Account/Login', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            })
+            .then(response => {
+                if (response.redirected) {
+                    // Success, redirect
+                    window.location.href = response.url;
+                } else {
+                    // Error, get error message
+                    return response.text();
+                }
+            })
+            .then(html => {
+                if (html) {
+                    // Parse HTML to get error message
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const errorDiv = doc.querySelector('.alert.alert-danger');
+                    if (errorDiv) {
+                        alert(errorDiv.textContent.trim());
+                    } else {
+                        alert('Đăng nhập thất bại.');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra. Vui lòng thử lại.');
+            });
         });
     }
 });

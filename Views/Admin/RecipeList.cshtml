@@ -10,21 +10,45 @@
 
 <div class="recipe-list">
     <h2 class="page-title">Quản lý công thức</h2>
-    <p class="page-subtitle">Danh sách tất cả công thức nấu ăn</p>
 
-    <div class="actions-bar">
-        <div class="search-section">
-            <form method="get" class="search-form" style="display: flex; gap: 8px; align-items: center;">
-                <input type="text" name="searchTerm" placeholder="Tìm kiếm công thức..." class="form-control" style="width: 250px;" value="@Context.Request.Query["searchTerm"]" />
-                <button type="submit" class="btn" style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px;">Tìm kiếm</button>
-                @if (!string.IsNullOrEmpty(Context.Request.Query["searchTerm"]))
-                {
-                    <a href="@Url.Action("RecipeList", "Admin")" class="btn" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; text-decoration: none;">Xóa tìm kiếm</a>
-                }
-            </form>
+    <!-- Block 1: Search and Add button -->
+    <div class="actions-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="search-section" style="display: flex; gap: 15px; align-items: center;">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm công thức..." class="form-control" style="width: 300px;" />
+            <div id="searchResults" class="search-results" style="display: none; position: absolute; background: #2A3441; border: 1px solid #3A475C; border-radius: 4px; max-height: 200px; overflow-y: auto; z-index: 1000; width: 300px; margin-top: 38px;"></div>
         </div>
         <div class="action-section">
-            <a href="@Url.Action("CreateRecipe", "Admin")" class="btn" style="background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; text-decoration: none;">Thêm công thức</a>
+            <button type="button" onclick="createRecipe()" class="btn" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-size: 16px; font-weight: 600;"><i class="fa-solid fa-plus" style="margin-right: 8px;"></i>Thêm công thức</button>
+        </div>
+    </div>
+
+    <!-- Block 2: Filters -->
+    <div class="actions-bar" style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px;">
+    <div class="search-section" style="display: flex; gap: 15px; align-items: center;">
+        <label for="typeOfDishFilter" style="color: #E0E1DD; font-weight: 500; white-space: nowrap;">Loại món:</label>
+        <select id="typeOfDishFilter" class="form-control" style="width: 180px;">
+            <option value="">Tất cả</option>
+        @foreach (var type in ViewBag.TypeOfDishes as List<string>)
+        {
+            <option value="@type" @(ViewBag.TypeOfDishFilter == type ? "selected" : "")>@type</option>
+    }
+    </select>
+        <label for="cookingMethodFilter" style="color: #E0E1DD; font-weight: 500; white-space: nowrap;">Phương pháp nấu:</label>
+        <select id="cookingMethodFilter" class="form-control" style="width: 180px;">
+                <option value="">Tất cả</option>
+        @foreach (var method in ViewBag.CookingMethods as List<string>)
+        {
+                <option value="@method" @(ViewBag.CookingMethodFilter == method ? "selected" : "")>@method</option>
+                }
+            </select>
+            <label for="timeFilter" style="color: #E0E1DD; font-weight: 500; white-space: nowrap;">Thời gian:</label>
+            <select id="timeFilter" class="form-control" style="width: 150px;">
+            <option value="all" @(ViewBag.TimeFilter == null || ViewBag.TimeFilter == "all" ? "selected" : "")>Tất cả</option>
+                <option value="15" @(ViewBag.TimeFilter == "15" ? "selected" : "")>Dưới 15 phút</option>
+            <option value="30" @(ViewBag.TimeFilter == "30" ? "selected" : "")>15-30 phút</option>
+                <option value="60" @(ViewBag.TimeFilter == "60" ? "selected" : "")>30-60 phút</option>
+                <option value="120" @(ViewBag.TimeFilter == "120" ? "selected" : "")>Trên 60 phút</option>
+            </select>
         </div>
     </div>
 
@@ -38,7 +62,8 @@
                     <th>Thời gian chuẩn bị</th>
                     <th>Thời gian nấu</th>
                     <th>Khẩu phần</th>
-                    <th>Người tạo</th>
+                    <th>Phương pháp nấu</th>
+                    <th>Loại món</th>
                     <th>Ngày tạo</th>
                     <th>Hành động</th>
                 </tr>
@@ -53,12 +78,13 @@
                         <td>@recipe.PrepTime phút</td>
                         <td>@recipe.CookTime phút</td>
                         <td>@recipe.Servings người</td>
-                        <td>@recipe.User?.FullName</td>
+                        <td>@recipe.Cooking_method</td>
+                        <td>@recipe.Type_of_dish</td>
                         <td>@recipe.CreatedAt.ToString("dd/MM/yyyy")</td>
                         <td class="action-buttons">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="viewRecipeDetails(@recipe.RecipeId)" style="background: #17a2b8; border-color: #17a2b8;">Xem</button>
-                        <a href="@Url.Action("EditRecipe", "Admin", new { id = recipe.RecipeId })" class="btn btn-warning btn-sm" style="background: #ffc107; border-color: #ffc107; color: #212529;">Sửa</a>
-                        <a href="@Url.Action("DeleteRecipe", "Admin", new { id = recipe.RecipeId })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa công thức này?')">Xóa</a>
+                        <button type="button" class="action-btn view-btn" onclick="viewRecipeDetails(@recipe.RecipeId)">Xem</button>
+                        <button type="button" class="action-btn edit-btn" onclick="editRecipe(@recipe.RecipeId)">Sửa</button>
+                        <button type="button" class="action-btn delete-btn" onclick="confirmDeleteRecipe(@recipe.RecipeId, '@recipe.Title')">Xóa</button>
                         </td>
                     </tr>
                 }
@@ -72,9 +98,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="recipeDetailsModalLabel">Chi tiết công thức</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body" id="recipeDetailsContent">
                     <!-- Content will be loaded here -->
@@ -85,24 +108,33 @@
             </div>
         </div>
     </div>
+
+    
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteRecipeModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận xóa</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa công thức "<span id="deleteRecipeTitle"></span>"?</p>
+                    <p class="text-danger">Hành động này không thể hoàn tác!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="$('#deleteRecipeModal').modal('hide');">Hủy</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDeleteRecipeAjax()">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-    <script>
-        function viewRecipeDetails(recipeId) {
-            $.ajax({
-                url: '@Url.Action("GetRecipeDetails", "Admin")',
-                type: 'GET',
-                data: { id: recipeId },
-                success: function(data) {
-                    $('#recipeDetailsContent').html(data);
-                    $('#recipeDetailsModal').modal('show');
-                },
-                error: function() {
-                    alert('Không thể tải thông tin công thức.');
-                }
-            });
-        }
-    </script>
+    <script src="~/js/Admin/recipelist.js" asp-append-version="true"></script>
 }
 

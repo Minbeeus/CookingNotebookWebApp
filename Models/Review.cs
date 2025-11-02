@@ -7,10 +7,10 @@ namespace CookingNotebookWebApp.Models
         public int ReviewId { get; set; }
         
         public int UserId { get; set; }
-        public User User { get; set; }
-        
+        public User User { get; set; } = default!;
+
         public int RecipeId { get; set; }
-        public Recipe Recipe { get; set; }
+        public Recipe Recipe { get; set; } = default!;
         
         [Required]
         [Range(1, 5)]
