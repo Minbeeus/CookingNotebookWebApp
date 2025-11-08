@@ -66,7 +66,7 @@ if (modalDescription) modalDescription.textContent = data.description || "Không
 // Ingredients
 const ingredientsDiv = document.getElementById("modalIngredients");
 const ingredientsList = document.getElementById("modalIngredientsList");
-if (data.ingredients && data.ingredients.length > 0) {
+if (data.ingredients && data.ingredients.length > 0 && ingredientsList) {
 ingredientsList.innerHTML = "";
 data.ingredients.forEach(ingredient => {
 const li = document.createElement("li");
@@ -78,10 +78,11 @@ ${ingredient.notes ? `<span class="ingredient-notes">(${ingredient.notes})</span
 `;
 ingredientsList.appendChild(li);
 });
-document.getElementById("modalIngredientsTitle").textContent = `Nguyên liệu (${data.servings} người ăn)`;
-ingredientsDiv.style.display = "block";
+const ingredientsTitle = document.getElementById("modalIngredientsTitle");
+if (ingredientsTitle) ingredientsTitle.textContent = `Nguyên liệu (${data.servings} người ăn)`;
+if (ingredientsDiv) ingredientsDiv.style.display = "block";
 } else {
-ingredientsDiv.style.display = "none";
+if (ingredientsDiv) ingredientsDiv.style.display = "none";
 }
 
 // Steps
@@ -91,7 +92,7 @@ const stepsContent = document.getElementById("modalStepsContent");
 const stepsIndicators = document.getElementById("modalStepsIndicators");
 const noSteps = document.getElementById("modalNoSteps");
 
-if (data.steps && data.steps.length > 0) {
+if (data.steps && data.steps.length > 0 && stepsContent && stepsIndicators) {
 stepsContent.innerHTML = "";
 stepsIndicators.innerHTML = "";
 
@@ -118,40 +119,47 @@ indicator.setAttribute("data-step", step.stepNumber);
 stepsIndicators.appendChild(indicator);
 });
 
-stepsCarousel.style.display = "flex";
-stepsIndicators.style.display = "flex";
-noSteps.style.display = "none";
-stepsDiv.style.display = "block";
+if (stepsCarousel) stepsCarousel.style.display = "flex";
+if (stepsIndicators) stepsIndicators.style.display = "flex";
+if (noSteps) noSteps.style.display = "none";
+if (stepsDiv) stepsDiv.style.display = "block";
 
 // Setup step navigation
 setupStepNavigation();
 } else {
-stepsCarousel.style.display = "none";
-stepsIndicators.style.display = "none";
-noSteps.style.display = "block";
-stepsDiv.style.display = "block";
+if (stepsCarousel) stepsCarousel.style.display = "none";
+if (stepsIndicators) stepsIndicators.style.display = "none";
+if (noSteps) noSteps.style.display = "block";
+if (stepsDiv) stepsDiv.style.display = "block";
 }
 
 // Notes
 const notesDiv = document.getElementById("modalNotes");
-if (data.note) {
-document.getElementById("modalNotesContent").textContent = data.note;
-notesDiv.style.display = "block";
+const notesContent = document.getElementById("modalNotesContent");
+if (data.note && notesContent) {
+notesContent.textContent = data.note;
+if (notesDiv) notesDiv.style.display = "block";
 } else {
-notesDiv.style.display = "none";
+if (notesDiv) notesDiv.style.display = "none";
 }
 
 // Action buttons
 const favoriteBtn = document.getElementById("modalFavoriteBtn");
-favoriteBtn.setAttribute("data-recipe-id", data.recipeId);
-favoriteBtn.classList.toggle("favorited", data.isFavorited);
+if (favoriteBtn) {
+    favoriteBtn.setAttribute("data-recipe-id", data.recipeId);
+    favoriteBtn.classList.toggle("favorited", data.isFavorited);
+}
 
 const reviewBtn = document.getElementById("modalReviewBtn");
-reviewBtn.setAttribute("data-recipe-id", data.recipeId);
+if (reviewBtn) {
+    reviewBtn.setAttribute("data-recipe-id", data.recipeId);
+}
 
 const rateBtn = document.getElementById("modalRateBtn");
-rateBtn.setAttribute("data-recipe-id", data.recipeId);
-rateBtn.classList.toggle("rated", data.userRating > 0);
+if (rateBtn) {
+    rateBtn.setAttribute("data-recipe-id", data.recipeId);
+    rateBtn.classList.toggle("rated", data.userRating > 0);
+}
 
 // Store rating data for JavaScript
 window.userRating = data.userRating || 0;

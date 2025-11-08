@@ -4,6 +4,7 @@
 }
 
 <link rel="stylesheet" href="~/css/Account/login.css" />
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <div class="login-container">
     <div class="login-card">
@@ -30,11 +31,27 @@
             </div>
 
             @* <div class="form-check mb-3">
-                <input asp-for="RememberMe" class="form-check-input" />
-                <label asp-for="RememberMe" class="form-check-label"></label>
+            <input asp-for="RememberMe" class="form-check-input" />
+            <label asp-for="RememberMe" class="form-check-label"></label>
             </div> *@
 
             <button type="submit" class="btn-login">Đăng nhập</button>
+
+            <div class="divider">hoặc</div>
+
+            <div id="g_id_onload"
+                 data-client_id="520683967311-8b4fmbfjprk3e4uinojds4tmr7mhj16c.apps.googleusercontent.com"
+                 data-callback="onGoogleSignIn"
+                 data-context="signin">
+            </div>
+
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-shape="rectangular"
+                 data-logo_alignment="left">
+            </div>
 
             <div class="login-links">
             <a href="/Account/Register">Đăng ký ngay</a>
@@ -44,5 +61,34 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/Account/login.js"></script>
+<script src="~/js/Account/login.js"></script>
+    <script>
+        function onGoogleSignIn(googleResponse) {
+            const id_token = googleResponse.credential;
+
+            // Gửi token đến server
+            fetch('/Account/GoogleLogin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'token=' + encodeURIComponent(id_token)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirect sẽ được handle bởi server
+                    window.location.reload();
+                } else {
+                    return response.text().then(error => {
+                        console.log('Đăng nhập thất bại:', error);
+                        //alert('Đăng nhập thất bại! Xem console để biết chi tiết.');
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert('Đăng nhập thất bại!');
+            });
+        }
+    </script>
 }

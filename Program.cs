@@ -24,6 +24,20 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Thêm MVC (Controllers + Views)
 builder.Services.AddControllersWithViews();
 
+// Thêm chính sách CORS
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5000", "http://localhost", "https://localhost:7089", "http://localhost:5083")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -35,10 +49,16 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+// Kích hoạt CORS
+app.UseCors(MyAllowSpecificOrigins);
+
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Map API controllers
+app.MapControllers();
 
 // Cấu hình route mặc định vào Login
 app.MapControllerRoute(

@@ -13,7 +13,7 @@ let cards = document.querySelectorAll(".recipe-card");
 
 // ====== Hàm cập nhật sự kiện click mở modal ======
 function refreshCards() {
-cards = document.querySelectorAll(".recipe-card");
+    cards = document.querySelectorAll(".recipe-link"); // Target the parent link to hide/show
 }
 
 refreshCards();
@@ -39,16 +39,38 @@ addFilterListeners(timeList, "timeFilter");
 
 // ====== Hàm lọc công thức ======
 function filterRecipes() {
-const typeOfDish = typeOfDishList.querySelector(".active").dataset.value;
-const cookingMethod = cookingMethodList.querySelector(".active").dataset.value;
-const timeFilterValue = timeList.querySelector(".active").dataset.value;
+    const typeOfDish = typeOfDishList.querySelector(".active").dataset.value;
+    const cookingMethod = cookingMethodList.querySelector(".active").dataset.value;
+    const timeFilterValue = timeList.querySelector(".active").dataset.value;
 
-// Redirect to server with filters
-const url = '/Favorites/Index?' +
-'typeOfDishFilter=' + encodeURIComponent(typeOfDish) +
-'&cookingMethodFilter=' + encodeURIComponent(cookingMethod) +
-'&timeFilter=' + encodeURIComponent(timeFilterValue);
-window.location.href = url;
+    cards.forEach(cardLink => {
+        const card = cardLink.querySelector('.recipe-card');
+        const typeMatch = !typeOfDish || card.dataset.typeofdish === typeOfDish;
+        const methodMatch = !cookingMethod || card.dataset.cookingmethod === cookingMethod;
+
+        const totalTime = parseInt(card.dataset.totaltime, 10);
+        let timeMatch = false;
+        switch (timeFilterValue) {
+            case "all":
+                timeMatch = true;
+                break;
+            case "15":
+                timeMatch = totalTime < 15;
+                break;
+            case "30":
+                timeMatch = totalTime >= 15 && totalTime <= 30;
+                break;
+            case "60":
+                timeMatch = totalTime > 30 && totalTime <= 60;
+                break;
+            case "120":
+                timeMatch = totalTime > 60;
+                break;
+        }
+
+        const isVisible = typeMatch && methodMatch && timeMatch;
+        cardLink.style.display = isVisible ? "block" : "none";
+    });
 }
 
 // ====== Chuyển đổi dạng hiển thị ======
@@ -70,14 +92,15 @@ listViewBtn.addEventListener("click", () => {
 function performSearch() {
     const searchTerm = searchInput.value.toLowerCase().trim();
 
-    cards.forEach(card => {
+    cards.forEach(cardLink => {
+        const card = cardLink.querySelector('.recipe-card');
         const title = (card.dataset.title || "").toLowerCase();
         const description = (card.dataset.description || "").toLowerCase();
         const author = (card.dataset.author || "").toLowerCase();
 
         const match = title.includes(searchTerm) ||
-                      description.includes(searchTerm) ||
-                      author.includes(searchTerm);
+            description.includes(searchTerm) ||
+            author.includes(searchTerm);
 
         card.style.display = match ? "block" : "none";
     });

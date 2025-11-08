@@ -65,18 +65,18 @@
                 {
                     @foreach (var recipe in Model)
                     {
-                        <a href="@Url.Action("Details", "Recipe", new { id = recipe.RecipeId })" class="recipe-link">
-                        <div class="recipe-card"
-                        data-typeofdish="@recipe.Type_of_dish"
-                        data-cookingmethod="@recipe.Cooking_method"
-                        data-time="@(recipe.PrepTime + recipe.CookTime)"
-                        data-title="@recipe.Title"
-                        data-description="@recipe.Description"
-                        data-image="@recipe.ImageUrl"
-                        data-preptime="@recipe.PrepTime"
-                        data-cooktime="@recipe.CookTime"
-                        data-servings="@recipe.Servings"
-                        data-author="@recipe.User?.FullName"
+                        <div class="recipe-link" data-recipe-id="@recipe.RecipeId">
+                            <div class="recipe-card"
+                                 data-typeofdish="@recipe.Type_of_dish"
+                                 data-cookingmethod="@recipe.Cooking_method"
+                                 data-time="@(recipe.PrepTime + recipe.CookTime)"
+                                 data-title="@recipe.Title"
+                                 data-description="@recipe.Description"
+                                 data-image="@recipe.ImageUrl"
+                                 data-preptime="@recipe.PrepTime"
+                                 data-cooktime="@recipe.CookTime"
+                                 data-servings="@recipe.Servings"
+                                 data-author="@recipe.User?.FullName"
                                  data-totaltime="@(recipe.PrepTime + recipe.CookTime)">
                                 <img src="@recipe.ImageUrl" alt="@recipe.Title" />
                                 <div class="info">
@@ -88,7 +88,7 @@
                                     <p>@recipe.Description</p>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     }
                 }
                 else

@@ -8,8 +8,9 @@ namespace CookingNotebookWebApp.Models
         public int UserId { get; set; }
         public string FullName { get; set; } = default!;
         public string Email { get; set; } = default!;
-        public string PasswordHash { get; set; } = default!;
+        public string? PasswordHash { get; set; }
         public string? Role { get; set; }
+        public string? GoogleId { get; set; }
         public bool Status { get; set; } = true;
         public DateTime CreatedAt { get; set; }
 

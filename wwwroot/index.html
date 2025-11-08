@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Đăng nhập Google</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+    <h3>Đăng nhập vào Sổ Tay Nấu Ăn</h3>
+
+    <div id="g_id_onload"
+         data-client_id="520683967311-8b4fmbfjprk3e4uinojds4tmr7mhj16c.apps.googleusercontent.com"
+         data-callback="onGoogleSignIn"
+         data-context="signin">
+    </div>
+
+    <div class="g_id_signin"
+         data-type="standard"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+
+    <script>
+        function onGoogleSignIn(googleResponse) {
+
+            const id_token = googleResponse.credential;
+            console.log("Google ID Token:", id_token);
+
+            const backendApiUrl = 'https://localhost:7089/api/auth/google';
+
+            fetch(backendApiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: id_token })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Xác thực backend thất bại');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Phản hồi từ server:', data);
+
+                alert('Đăng nhập thành công: ' + data.userEmail);
+
+            })
+            .catch(error => {
+                console.error('Lỗi khi gửi token về server:', error);
+                alert('Đăng nhập thất bại!');
+            });
+        }
+    </script>
+
+</body>
+</html>

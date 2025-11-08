@@ -1,21 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using CookingNotebookWebApp.Models.ViewModels;
 using CookingNotebookWebApp.Data;
 using CookingNotebookWebApp.Models;
+using Google.Apis.Auth;
+using Microsoft.Extensions.Configuration;
 
 namespace CookingNotebookWebApp.Controllers
 {
     public class AccountController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly string _googleClientId;
 
-        public AccountController(AppDbContext context)
+        public AccountController(AppDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+            _googleClientId = _configuration["Google:ClientId"];
         }
 
         // ================== LOGIN ==================
@@ -132,6 +139,87 @@ namespace CookingNotebookWebApp.Controllers
 
             TempData["SuccessMessage"] = "Đăng ký thành công! Mời bạn đăng nhập.";
             return RedirectToAction("Login");
+        }
+
+        // ================== GOOGLE LOGIN ==================
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> GoogleLogin(string token)
+        {
+        if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Token is required");
+            }
+
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string>() { _googleClientId }
+            };
+
+            try
+            {
+                GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(token, settings);
+
+                // Tìm kiếm hoặc tạo mới người dùng
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == payload.Email);
+
+                if (user == null)
+                {
+                    // Tạo người dùng mới
+                    user = new User
+                    {
+                    Email = payload.Email,
+                    FullName = payload.Name,
+                    GoogleId = payload.Subject,
+                    Role = "User",
+                    Status = true,
+                    CreatedAt = DateTime.UtcNow
+                    };
+                    _context.Users.Add(user);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    // Cập nhật thông tin
+                    user.GoogleId = payload.Subject;
+                    user.FullName = payload.Name;
+                    await _context.SaveChangesAsync();
+                }
+
+                // Tạo claims và sign in
+                var claims = new List<Claim>
+                {
+                    new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new(ClaimTypes.Email, user.Email),
+                    new(ClaimTypes.Name, user.FullName ?? user.Email),
+                    new(ClaimTypes.Role, user.Role ?? "User")
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties
+                );
+
+                // Redirect theo role
+                if (user.Role != null && user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToAction("Dashboard", "Admin");
+                }
+
+                return RedirectToAction("Homepage", "Homepage");
+            }
+            catch (InvalidJwtException)
+            {
+                return BadRequest("Invalid token");
+            }
         }
 
         // ================== LOGOUT ==================
