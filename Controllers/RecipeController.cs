@@ -123,7 +123,7 @@ namespace CookingNotebookWebApp.Controllers
             // Tính rating trung bình
             if (recipe.Reviews != null && recipe.Reviews.Any())
             {
-                recipe.AverageRating = Math.Round(recipe.Reviews.Average(r => r.Rating), 1);
+                recipe.AverageRating = (decimal)Math.Round(recipe.Reviews.Average(r => r.Rating), 1);
             }
             else
             {
@@ -254,7 +254,7 @@ namespace CookingNotebookWebApp.Controllers
             // Tính rating trung bình
             if (recipe.Reviews != null && recipe.Reviews.Any())
             {
-                recipe.AverageRating = Math.Round(recipe.Reviews.Average(r => r.Rating), 1);
+                recipe.AverageRating = (decimal)Math.Round(recipe.Reviews.Average(r => r.Rating), 1);
             }
             else
             {

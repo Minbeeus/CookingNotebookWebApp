@@ -1,0 +1,455 @@
+@model List<CookingNotebookWebApp.Models.MealTime>
+@{
+    ViewData["Title"] = "Lập Kế Hoạch Bữa Ăn";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+<link rel="stylesheet" href="~/css/MealPlanning/index.css" />
+}
+
+<div class="meal-planning-wrapper">
+    <div class="meal-planning-container">
+        <!-- Header -->
+        <div class="header-section">
+            <h1>🧑‍🍳 Trợ lý Bữa ăn Thông minh</h1>
+            <p>Hãy cho tôi biết nhu cầu của bạn, tôi sẽ giúp bạn lên một kế hoạch bữa ăn thật hoàn hảo!</p>
+        </div>
+
+        <!-- Form Input -->
+        <div class="form-section">
+            <form id="mealPlanForm">
+                <!-- Số ngày -->
+                <div class="form-group">
+                    <label>📅 Bạn muốn lập kế hoạch cho bao nhiêu ngày?</label>
+                    <div class="stepper">
+                        <button type="button" class="stepper-btn" id="decreaseNumDays">−</button>
+                        <div class="stepper-display" id="numDaysDisplay">7</div>
+                        <button type="button" class="stepper-btn" id="increaseNumDays">+</button>
+                    </div>
+                    <input type="hidden" id="numDays" name="numDays" value="7">
+                </div>
+
+                <!-- Số người -->
+                <div class="form-group">
+                    <label>👥 Dành cho bao nhiêu người ăn?</label>
+                    <div class="stepper">
+                        <button type="button" class="stepper-btn" id="decreaseNumPeople">−</button>
+                        <div class="stepper-display" id="numPeopleDisplay">2</div>
+                        <button type="button" class="stepper-btn" id="increaseNumPeople">+</button>
+                    </div>
+                    <input type="hidden" id="numPeople" name="numPeople" value="2">
+                </div>
+
+                <!-- Bữa ăn -->
+                <div class="form-group">
+                    <label>🍽️ Bạn muốn lên kế hoạch cho các bữa nào?</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mealTime1" name="mealTimes" value="1" checked>
+                            <label for="mealTime1">
+                                <span class="emoji">☀️</span>
+                                <span>Bữa Sáng</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mealTime2" name="mealTimes" value="2" checked>
+                            <label for="mealTime2">
+                                <span class="emoji">🥗</span>
+                                <span>Bữa Trưa</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mealTime3" name="mealTimes" value="3" checked>
+                            <label for="mealTime3">
+                                <span class="emoji">🌙</span>
+                                <span>Bữa Tối</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mealTime4" name="mealTimes" value="4">
+                            <label for="mealTime4">
+                                <span class="emoji">🥨</span>
+                                <span>Ăn nhẹ</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Yêu cầu đặc biệt -->
+                <div class="form-group">
+                    <label>🎯 Yêu cầu đặc biệt? (Tùy chọn)</label>
+                    <input type="text" id="restrictionsInput" placeholder="Ví dụ: Chay, Nhanh, Không cay... (nhập và nhấn Enter)" class="multiselect-input">
+                    <div class="tag-input-container" id="restrictionsContainer">
+                        <!-- Tags sẽ được thêm tại đây -->
+                    </div>
+                    <input type="hidden" id="restrictions" name="restrictions" value="">
+                </div>
+
+                <!-- Error message -->
+                <div class="error-message" id="errorMessage"></div>
+
+                <!-- Submit button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="loading-spinner" id="spinner"></span>
+                    <span id="btnText">💡 Tạo Kế Hoạch Ngay!</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Result Section -->
+        <div class="result-section" id="resultSection">
+            <div class="tabs">
+                <button type="button" class="tab-button active" data-tab="mealPlan">📅 Lịch Bữa Ăn</button>
+                <button type="button" class="tab-button" data-tab="shoppingList">🛒 Danh Sách Mua Sắm</button>
+            </div>
+
+            <!-- Tab: Meal Plan -->
+            <div class="tab-content active" id="mealPlanTab">
+                <div id="mealPlanContent">
+                    <!-- Meal plan sẽ được thêm tại đây -->
+                </div>
+            </div>
+
+            <!-- Tab: Shopping List -->
+            <div class="tab-content" id="shoppingListTab">
+                <div id="shoppingListContent" class="shopping-list">
+                    <!-- Shopping list sẽ được thêm tại đây -->
+                </div>
+                <div class="action-buttons">
+                    <button type="button" class="action-btn" onclick="printShoppingList()">🖨️ In Danh Sách</button>
+                    <button type="button" class="action-btn" onclick="emailShoppingList()">✉️ Gửi Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const USER_ID = 1; // Thay bằng current user ID từ session
+
+    // Stepper functions
+    function updateStepper(inputId, displayId, value, min = 1, max = 30) {
+        const input = document.getElementById(inputId);
+        const display = document.getElementById(displayId);
+        const newValue = Math.max(min, Math.min(max, value));
+        input.value = newValue;
+        display.textContent = newValue;
+        return newValue;
+    }
+
+    document.getElementById('increaseNumDays').addEventListener('click', (e) => {
+        e.preventDefault();
+        const current = parseInt(document.getElementById('numDays').value);
+        updateStepper('numDays', 'numDaysDisplay', current + 1);
+    });
+
+    document.getElementById('decreaseNumDays').addEventListener('click', (e) => {
+        e.preventDefault();
+        const current = parseInt(document.getElementById('numDays').value);
+        updateStepper('numDays', 'numDaysDisplay', current - 1);
+    });
+
+    document.getElementById('increaseNumPeople').addEventListener('click', (e) => {
+        e.preventDefault();
+        const current = parseInt(document.getElementById('numPeople').value);
+        updateStepper('numPeople', 'numPeopleDisplay', current + 1, 1, 50);
+    });
+
+    document.getElementById('decreaseNumPeople').addEventListener('click', (e) => {
+        e.preventDefault();
+        const current = parseInt(document.getElementById('numPeople').value);
+        updateStepper('numPeople', 'numPeopleDisplay', current - 1, 1, 50);
+    });
+
+    // Restrictions tag input
+    document.getElementById('restrictionsInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const value = e.target.value.trim();
+            if (value) {
+                addRestrictionTag(value);
+                e.target.value = '';
+            }
+        }
+    });
+
+    function addRestrictionTag(text) {
+        const container = document.getElementById('restrictionsContainer');
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.innerHTML = `
+            <span>${text}</span>
+            <span class="tag-remove" onclick="this.parentElement.remove(); updateRestrictionsInput();">×</span>
+        `;
+        container.appendChild(tag);
+        updateRestrictionsInput();
+    }
+
+    function updateRestrictionsInput() {
+        const tags = document.querySelectorAll('.tag span:first-child');
+        const restrictions = Array.from(tags).map(t => t.textContent);
+        document.getElementById('restrictions').value = JSON.stringify(restrictions);
+    }
+
+    // Form submit
+    document.getElementById('mealPlanForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const numDays = parseInt(document.getElementById('numDays').value);
+        const numPeople = parseInt(document.getElementById('numPeople').value);
+        const mealTimes = Array.from(document.querySelectorAll('input[name="mealTimes"]:checked')).map(cb => parseInt(cb.value));
+        const restrictions = JSON.parse(document.getElementById('restrictions').value || '[]');
+
+        // Validation
+        const errorMsg = document.getElementById('errorMessage');
+        if (numDays < 1 || numDays > 30) {
+            errorMsg.textContent = '⚠️ Số ngày phải từ 1 đến 30';
+            errorMsg.classList.add('show');
+            return;
+        }
+        if (numPeople < 1) {
+            errorMsg.textContent = '⚠️ Số người phải lớn hơn 0';
+            errorMsg.classList.add('show');
+            return;
+        }
+        if (mealTimes.length === 0) {
+            errorMsg.textContent = '⚠️ Vui lòng chọn ít nhất 1 bữa ăn';
+            errorMsg.classList.add('show');
+            return;
+        }
+        errorMsg.classList.remove('show');
+
+        // Show loading
+        const btn = document.getElementById('submitBtn');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btnText');
+        btn.disabled = true;
+        spinner.style.display = 'inline-block';
+        btnText.textContent = 'Đang tạo kế hoạch...';
+
+        try {
+            const response = await fetch('/api/mealplanning/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: USER_ID,
+                    numDays: numDays,
+                    numPeople: numPeople,
+                    mealTimeIds: mealTimes,
+                    restrictions: restrictions
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                displayResults(data.mealPlan, data.shoppingList);
+                document.getElementById('resultSection').classList.add('show');
+                window.scrollTo({ top: document.getElementById('resultSection').offsetTop - 100, behavior: 'smooth' });
+            } else {
+                errorMsg.textContent = '⚠️ ' + data.message;
+                errorMsg.classList.add('show');
+            }
+        } catch (error) {
+            errorMsg.textContent = '⚠️ Lỗi: ' + error.message;
+            errorMsg.classList.add('show');
+        } finally {
+            btn.disabled = false;
+            spinner.style.display = 'none';
+            btnText.textContent = '💡 Tạo Kế Hoạch Ngay!';
+        }
+    });
+
+    // Display Results
+    function displayResults(mealPlan, shoppingList) {
+        displayMealPlan(mealPlan);
+        displayShoppingList(shoppingList);
+    }
+
+    function displayMealPlan(mealPlan) {
+        if (!mealPlan || mealPlan.length === 0) {
+            document.getElementById('mealPlanContent').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📅</div>Không tìm thấy kế hoạch bữa ăn</div>';
+            return;
+        }
+
+        let html = '';
+        let currentDay = 0;
+
+        for (const meal of mealPlan) {
+            if (meal.day !== currentDay) {
+                currentDay = meal.day;
+                html += `<div class="day-header">📅 Ngày ${currentDay}</div>`;
+            }
+
+            const mealType = getMealType(meal.mealName);
+            const cardClass = `meal-card ${mealType}`;
+            const rating = meal.rating ? `⭐ ${meal.rating}/5` : '⭐ 4.5/5';
+            const prepTime = meal.prepTime || '10';
+            const cookTime = meal.cookTime || '20';
+
+            html += `
+                <div class="${cardClass}">
+                    <div class="recipe-item">
+                        <div class="recipe-image">
+                            ${meal.imageUrl ? `<img src="${meal.imageUrl}" alt="${meal.recipeTitle}">` : '<div style="background: #e0e0e0; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; color: #999; font-size: 2em;">🍽️</div>'}
+                        </div>
+                        <div class="recipe-info">
+                            <div class="recipe-title">${getMealEmoji(meal.mealName)} ${meal.mealName} - ${meal.recipeTitle}</div>
+                            <div class="recipe-rating">${rating}</div>
+                            <div class="recipe-time">⏱️ Prep: ${prepTime} phút | Cook: ${cookTime} phút</div>
+                            <div class="recipe-actions">
+                                <a href="/Recipe/Details/${meal.recipeId}" class="recipe-link">Xem chi tiết ➔</a>
+                                <button class="recipe-btn" onclick="changeRecipe(${meal.day}, '${meal.mealName}')">🔄 Đổi món</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        document.getElementById('mealPlanContent').innerHTML = html;
+    }
+
+    function getMealEmoji(mealName) {
+        if (mealName.includes('Sáng') || mealName.includes('Breakfast')) return '☀️';
+        if (mealName.includes('Trưa') || mealName.includes('Lunch')) return '🥗';
+        if (mealName.includes('Tối') || mealName.includes('Dinner')) return '🌙';
+        if (mealName.includes('nhẹ') || mealName.includes('Snack')) return '🥨';
+        return '🍽️';
+    }
+
+    function getMealType(mealName) {
+        if (mealName.includes('Sáng') || mealName.includes('Breakfast')) return 'breakfast';
+        if (mealName.includes('Trưa') || mealName.includes('Lunch')) return 'lunch';
+        if (mealName.includes('Tối') || mealName.includes('Dinner')) return 'dinner';
+        return '';
+    }
+
+    function displayShoppingList(shoppingList) {
+        if (!shoppingList || shoppingList.length === 0) {
+            document.getElementById('shoppingListContent').innerHTML = '<div class="empty-state"><div class="empty-state-icon">🛒</div>Danh sách mua sắm trống</div>';
+            return;
+        }
+
+        // Group by ingredient type with proper categorization
+        const grouped = {};
+        const categoryIcons = {
+            'Thịt & Hải sản': '🍖',
+            'Rau củ': '🥬',
+            'Gia vị & Khác': '🧂',
+            'Ngũ cốc & Bánh': '🌾',
+            'Sữa & Phô mai': '🥛',
+            'Khác': '🏪'
+        };
+
+        for (const item of shoppingList) {
+            // Determine category based on ingredient
+            let type = 'Khác';
+            const name = (item.ingredientName || '').toLowerCase();
+            
+            if (name.includes('thịt') || name.includes('gà') || name.includes('cá') || name.includes('tôm') || name.includes('cua') || name.includes('mực')) {
+                type = 'Thịt & Hải sản';
+            } else if (name.includes('rau') || name.includes('cải') || name.includes('cà') || name.includes('cũ') || name.includes('khoai') || name.includes('cà rốt')) {
+                type = 'Rau củ';
+            } else if (name.includes('nước mắm') || name.includes('tỏi') || name.includes('hành') || name.includes('gia vị') || name.includes('dầu') || name.includes('muối') || name.includes('đường')) {
+                type = 'Gia vị & Khác';
+            } else if (name.includes('gạo') || name.includes('bánh') || name.includes('mì') || name.includes('cơm')) {
+                type = 'Ngũ cốc & Bánh';
+            } else if (name.includes('sữa') || name.includes('phô mai') || name.includes('butter')) {
+                type = 'Sữa & Phô mai';
+            }
+            
+            if (!grouped[type]) grouped[type] = [];
+            grouped[type].push(item);
+        }
+
+        let html = '';
+        for (const [type, items] of Object.entries(grouped)) {
+            const icon = categoryIcons[type] || '🏪';
+            html += `<div class="ingredient-group">
+                <div class="ingredient-group-title">${icon} ${type}</div>`;
+            
+            for (const item of items) {
+                const quantity = item.totalQuantity || item.quantity || '1';
+                const unit = item.unit || '';
+                html += `
+                    <div class="ingredient-item">
+                        <input type="checkbox" onchange="this.parentElement.classList.toggle('checked')">
+                        <div class="ingredient-info">
+                            <div class="ingredient-name">${item.ingredientName || 'Không rõ'}</div>
+                            <div class="ingredient-quantity">${quantity} ${unit}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            html += '</div>';
+        }
+
+        document.getElementById('shoppingListContent').innerHTML = html;
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const tab = e.target.dataset.tab;
+            
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            
+            e.target.classList.add('active');
+            document.getElementById(tab + 'Tab').classList.add('active');
+        });
+    });
+
+    // Action functions
+    function changeRecipe(day, mealName) {
+        const errorMsg = document.getElementById('errorMessage');
+        errorMsg.textContent = '💡 Tính năng đổi món sẽ được cập nhật trong phiên bản tiếp theo';
+        errorMsg.classList.add('show');
+        setTimeout(() => {
+            errorMsg.classList.remove('show');
+        }, 3000);
+    }
+
+    function printShoppingList() {
+        const printWindow = window.open('', '', 'width=800,height=600');
+        const content = document.getElementById('shoppingListContent').innerHTML;
+        
+        const styles = `
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                h2 { color: #f28c38; margin-bottom: 20px; }
+                .ingredient-group { margin-bottom: 20px; }
+                .ingredient-group-title { font-weight: bold; color: #f28c38; margin-bottom: 10px; font-size: 1.1em; }
+                .ingredient-item { display: flex; margin-bottom: 8px; }
+                .ingredient-name { font-weight: 500; min-width: 200px; }
+                .ingredient-quantity { color: #666; }
+                @@media print { 
+                    body { margin: 0; } 
+                    .ingredient-item { page-break-inside: avoid; }
+                }
+            </style>
+        `;
+        
+        printWindow.document.write(`<!DOCTYPE html><html><head>${styles}</head><body>`);
+        printWindow.document.write('<h2>🛒 Danh Sách Mua Sắm</h2>');
+        printWindow.document.write(content);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    function emailShoppingList() {
+        const errorMsg = document.getElementById('errorMessage');
+        errorMsg.textContent = '💡 Tính năng gửi email sẽ được cập nhật trong phiên bản tiếp theo';
+        errorMsg.classList.add('show');
+        setTimeout(() => {
+            errorMsg.classList.remove('show');
+        }, 3000);
+    }
+</script>
+}

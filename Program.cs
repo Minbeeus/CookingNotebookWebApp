@@ -1,4 +1,5 @@
 using CookingNotebookWebApp.Data;
+using CookingNotebookWebApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -7,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Đăng ký DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Đăng ký MealPlanningService
+builder.Services.AddScoped<MealPlanningService>();
 
 // Thêm xác thực cookie
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

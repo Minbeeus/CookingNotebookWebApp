@@ -14,6 +14,8 @@ namespace CookingNotebookWebApp.Data
         public DbSet<RecipeStep> RecipeSteps { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<MealTime> MealTimes { get; set; }
+        public DbSet<Recipe_MealTime> Recipe_MealTimes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -78,6 +80,22 @@ namespace CookingNotebookWebApp.Data
                 .HasOne(rs => rs.Recipe)
                 .WithMany(r => r.Steps)
                 .HasForeignKey(rs => rs.RecipeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Khóa chính composite cho bảng Recipe_MealTime
+            modelBuilder.Entity<Recipe_MealTime>()
+                .HasKey(rmt => new { rmt.RecipeId, rmt.MealTimeId });
+
+            modelBuilder.Entity<Recipe_MealTime>()
+                .HasOne(rmt => rmt.Recipe)
+                .WithMany(r => r.Recipe_MealTimes)
+                .HasForeignKey(rmt => rmt.RecipeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Recipe_MealTime>()
+                .HasOne(rmt => rmt.MealTime)
+                .WithMany(m => m.Recipe_MealTimes)
+                .HasForeignKey(rmt => rmt.MealTimeId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

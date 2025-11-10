@@ -1,0 +1,146 @@
+### Test Meal Planning Algorithm
+### Thay đổi localhost:5000 thành port thực tế của bạn
+
+@baseUrl = http://localhost:5000
+@contentType = application/json
+
+### Test 1: Health Check
+GET {{baseUrl}}/api/mealplanning/health
+
+###
+
+### Test 2: Lấy danh sách bữa ăn
+GET {{baseUrl}}/api/mealplanning/mealtimes
+
+###
+
+### Test 3: Lập kế hoạch cơ bản (7 ngày, 3 bữa/ngày, 2 người)
+POST {{baseUrl}}/api/mealplanning/generate
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "numDays": 7,
+  "numPeople": 2,
+  "mealTimeIds": [1, 2, 3],
+  "restrictions": []
+}
+
+###
+
+### Test 4: Lập kế hoạch ngắn (3 ngày, 2 bữa/ngày, 4 người)
+POST {{baseUrl}}/api/mealplanning/generate
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "numDays": 3,
+  "numPeople": 4,
+  "mealTimeIds": [1, 2],
+  "restrictions": []
+}
+
+###
+
+### Test 5: Với Restrictions (Chay)
+POST {{baseUrl}}/api/mealplanning/generate
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "numDays": 3,
+  "numPeople": 2,
+  "mealTimeIds": [1, 2, 3],
+  "restrictions": ["Chay"]
+}
+
+###
+
+### Test 6: Với Restrictions (Không cay)
+POST {{baseUrl}}/api/mealplanning/generate
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "numDays": 2,
+  "numPeople": 2,
+  "mealTimeIds": [2, 3],
+  "restrictions": ["Cay"]
+}
+
+###
+
+### Test 7: Lập kế hoạch chi tiết (10 ngày, 3 bữa, 6 người)
+POST {{baseUrl}}/api/mealplanning/generate
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "numDays": 10,
+  "numPeople": 6,
+  "mealTimeIds": [1, 2, 3],
+  "restrictions": []
+}
+
+###
+
+### Test 8: Chỉ bữa sáng (5 ngày)
+POST {{baseUrl}}/api/mealplanning/generate
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "numDays": 5,
+  "numPeople": 2,
+  "mealTimeIds": [1],
+  "restrictions": []
+}
+
+###
+
+### Test 9: Error - Invalid NumDays (0)
+POST {{baseUrl}}/api/mealplanning/generate
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "numDays": 0,
+  "numPeople": 2,
+  "mealTimeIds": [1, 2, 3],
+  "restrictions": []
+}
+
+###
+
+### Test 10: Error - Invalid NumPeople
+POST {{baseUrl}}/api/mealplanning/generate
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "numDays": 7,
+  "numPeople": 0,
+  "mealTimeIds": [1, 2, 3],
+  "restrictions": []
+}
+
+###
+
+### Test 11: Error - Empty MealTimeIds
+POST {{baseUrl}}/api/mealplanning/generate
+Content-Type: {{contentType}}
+
+{
+  "userId": 1,
+  "numDays": 7,
+  "numPeople": 2,
+  "mealTimeIds": [],
+  "restrictions": []
+}
+
+###
+
+### Test 12: Run Full Test Suite (Console Output)
+POST {{baseUrl}}/api/mealplanning/test
+Content-Type: {{contentType}}
+

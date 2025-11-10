@@ -33,19 +33,24 @@ namespace CookingNotebookWebApp.Models
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+
+        [Required]
+        [Range(0, 5)]
+        public decimal AverageRating { get; set; } = 0;
+
+        [Required]
+        public int ReviewCount { get; set; } = 0;
         
         // Navigation properties
         public ICollection<RecipeIngredient>? RecipeIngredients { get; set; }
         public ICollection<RecipeStep>? Steps { get; set; }
         public ICollection<Review>? Reviews { get; set; }
         public ICollection<Favorite>? Favorites { get; set; }
+        public ICollection<Recipe_MealTime>? Recipe_MealTimes { get; set; }
 
         // View properties
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public bool IsFavorited { get; set; }
-
-        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
-        public double AverageRating { get; set; }
 
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public int UserRating { get; set; }
